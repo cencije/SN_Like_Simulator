@@ -17,20 +17,20 @@ public class Simulator_Main
 
     }
 
-    public static void main(String args[]) {
+    public static void main() {
         Simulator_Main sim = new Simulator_Main();
         //sim.readInputs(args[0]);
         sim.callGUI();
     }
 
-    public void readInputs(String fileInput) {
+    /*public void readInputs(String fileInput) {
         String file = fileInput;
         try {
             Scanner fileIN = new Scanner(new File(file));
         } catch(Exception e) {
             
         }
-    }
+    }*/
     
     public void callGUI() {
         guiClass = new GUIClass();

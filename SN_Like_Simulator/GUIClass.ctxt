@@ -6,4 +6,6 @@ comment1.params=
 comment1.target=void\ makeGUI()
 comment2.params=evt
 comment2.target=void\ actionPerformed(java.awt.event.ActionEvent)
-numComments=3
+comment3.params=
+comment3.target=void\ beginSimulation()
+numComments=4

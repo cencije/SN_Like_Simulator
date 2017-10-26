@@ -2,10 +2,9 @@
 comment0.params=
 comment0.target=Simulator_Main()
 comment0.text=\n\ Constructor\ for\ objects\ of\ class\ Simulator_Main\n
-comment1.params=args
-comment1.target=void\ main(java.lang.String[])
-comment2.params=fileInput
-comment2.target=void\ readInputs(java.lang.String)
-comment3.params=
-comment3.target=void\ callGUI()
-numComments=4
+comment1.params=
+comment1.target=void\ main()
+comment2.params=
+comment2.target=void\ callGUI()
+comment2.text=public\ void\ readInputs(String\ fileInput)\ {\n\ \ \ \ \ \ \ \ String\ file\ \=\ fileInput;\n\ \ \ \ \ \ \ \ try\ {\n\ \ \ \ \ \ \ \ \ \ \ \ Scanner\ fileIN\ \=\ new\ Scanner(new\ File(file));\n\ \ \ \ \ \ \ \ }\ catch(Exception\ e)\ {\n\ \ \ \ \ \ \ \ \ \ \ \ \n\ \ \ \ \ \ \ \ }\n}
+numComments=3
