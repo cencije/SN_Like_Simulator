@@ -25,9 +25,10 @@ public class GUIClass extends JPanel implements ActionListener
     Color aqua = new Color(0, 255, 255);
     int days, users;
     Random rand;
-    
+
     ArrayList<User> userList = new ArrayList<User>();
-    
+    ArrayList<Post> postList = new ArrayList<Post>();
+
     /**
      * Constructor for objects of class GUIClass
      */
@@ -88,15 +89,18 @@ public class GUIClass extends JPanel implements ActionListener
     public void actionPerformed(ActionEvent evt) {
         int timesTried = 0;
         if (evt.getActionCommand().equals("Run")) {
-            beginSimulation();
+            setupSimulation();
             btnRun.setEnabled(false);
+            btnParameters.setEnabled(true);
         }
         if (evt.getActionCommand().equals("Set Parameters")) {
+            userList.clear();
+            postList.clear();
             boolean validUsersNumber = true;
             boolean validDaysNumber = true;
             String usersString = tfUsers.getText();
             String daysString = tfDays.getText();
-            
+
             if (usersString.equals("")) {
                 System.out.println("Invalid Users Value");
                 validUsersNumber = false; 
@@ -129,17 +133,43 @@ public class GUIClass extends JPanel implements ActionListener
         }
     }
 
-    public void beginSimulation() {
+    public void setupSimulation() {
+        makeUsers();
+        runSimulation();
+        getStats();
+    }
+
+    public void makeUsers() {
         for (int i = 0; i < users; i++) {
-            User u = new User(i, (rand.nextInt(10) + 1), (rand.nextInt(10) + 1));
+            User u = new User(i, (rand.nextInt(9) + 2), (rand.nextInt(9) + 2));
             userList.add(u);
         }
-        /*for (int i = 0; i < userList.size(); i++) {
-            User u = userList.get(i);
-            System.out.println("User Number: " + u.userIDNo + " Login #: " + u.loginPossibility + " OGLvl: "
-                                + u.outgoingLevel);
-            
-        }*/
     }
-    
+
+    public void runSimulation() {
+        for (int i = 0; i < days; i++) {
+            for (int j = 0; j < users; j++) {
+                userList.get(j).checkActivity(postList);
+            }
+        }
+    }
+
+    public void getStats() {
+        int totalLikes;
+        int totalShares;
+        Post mostViewed;
+        Post mostLiked;
+        Post mostShared;
+        User mostActive;
+        User mostFriends;
+        User leastFriends;
+        
+        for (int i = 0; i < users; i++) {
+            float loginPercentage = (userList.get(i).loginAmount * 100f) / days;
+            
+            System.out.print("User " + userList.get(i).userIDNo + " login %");
+            System.out.printf("%.2f", loginPercentage);
+            System.out.println();
+        }
+    }
 }

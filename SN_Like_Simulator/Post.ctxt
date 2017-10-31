@@ -18,4 +18,6 @@ comment7.params=
 comment7.target=int\ getShares()
 comment8.params=
 comment8.target=int\ getViews()
-numComments=9
+comment9.params=
+comment9.target=int\ getOriginalDay()
+numComments=10

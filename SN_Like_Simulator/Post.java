@@ -33,4 +33,5 @@ public class Post
     public int getLikes() { return likes; }
     public int getShares() { return shares; }
     public int getViews() { return views; }
+    public int getOriginalDay() { return dayNumber; }
 }
