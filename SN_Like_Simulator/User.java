@@ -17,6 +17,7 @@ public class User
     int outgoingLevel = 0;
     Random rand;
     ArrayList<Integer> friendList = new ArrayList<Integer>();
+    GUIClass main;
     /**
      * Constructor for objects of class User
      */
@@ -25,7 +26,8 @@ public class User
 
     }
 
-    public User(int id, int loginPos, int outgoingLVL) {
+    public User(int id, int loginPos, int outgoingLVL, GUIClass mainGui) {
+        main = mainGui;
         userIDNo = id;
         loginPossibility = loginPos;
         outgoingLevel = outgoingLVL;
@@ -45,20 +47,16 @@ public class User
             if (likePost >= 1) {
                 likeAmount++;
                 postList.get(i).liked();
+                //System.out.println("User # " + userIDNo + " liked Post # " + i);
             }
         }
         int genPostChance = rand.nextInt(outgoingLevel);
         if (genPostChance >= 1) {
-            
+           main.newPost(this);
         }
-        
     }
 
     public void newFriend(int otherUserID) {
-
-    }
-    public void makePost() {
-        
         
     }
 }

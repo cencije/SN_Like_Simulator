@@ -17,7 +17,7 @@ public class Simulator_Main
 
     }
 
-    public static void main() {
+    public static void main(String args[]) {
         Simulator_Main sim = new Simulator_Main();
         //sim.readInputs(args[0]);
         sim.callGUI();

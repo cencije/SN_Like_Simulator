@@ -14,4 +14,6 @@ comment5.params=
 comment5.target=void\ runSimulation()
 comment6.params=
 comment6.target=void\ getStats()
-numComments=7
+comment7.params=u
+comment7.target=void\ newPost(User)
+numComments=8

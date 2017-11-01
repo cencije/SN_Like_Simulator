@@ -24,11 +24,13 @@ public class GUIClass extends JPanel implements ActionListener
     Color lightGreen = new Color(204, 255, 153);
     Color aqua = new Color(0, 255, 255);
     int days, users;
+    int dayNumber;
     Random rand;
 
     ArrayList<User> userList = new ArrayList<User>();
     ArrayList<Post> postList = new ArrayList<Post>();
-
+    ArrayList<Post> recentPostList = new ArrayList<Post>();
+   
     /**
      * Constructor for objects of class GUIClass
      */
@@ -141,15 +143,30 @@ public class GUIClass extends JPanel implements ActionListener
 
     public void makeUsers() {
         for (int i = 0; i < users; i++) {
-            User u = new User(i, (rand.nextInt(9) + 2), (rand.nextInt(9) + 2));
+            User u = new User(i, (rand.nextInt(9) + 2), (rand.nextInt(9) + 2), this);
             userList.add(u);
         }
     }
 
     public void runSimulation() {
-        for (int i = 0; i < days; i++) {
-            for (int j = 0; j < users; j++) {
-                userList.get(j).checkActivity(postList);
+        for (int i = 1; i <= days; i++) {
+            dayNumber = i;
+            ArrayList<User> todaysList = new ArrayList<User>(userList);
+            for (int j = 0; j < recentPostList.size(); j++) {
+                Post thisPost = recentPostList.get(j);
+                int dayNo = thisPost.getOriginalDay();
+                if ((i - dayNo) > 5) {
+                    System.out.println("Removing Post # " + recentPostList.get(j).getID());
+                    recentPostList.remove(j);
+                    j--;
+                    
+                }
+                if ((j + 1) > recentPostList.size()) break;
+            }
+            while(todaysList.size() > 0) {
+                int checkedUser = rand.nextInt(todaysList.size());
+                todaysList.get(checkedUser).checkActivity(recentPostList);
+                todaysList.remove(checkedUser);
             }
         }
     }
@@ -157,19 +174,60 @@ public class GUIClass extends JPanel implements ActionListener
     public void getStats() {
         int totalLikes;
         int totalShares;
-        Post mostViewed;
-        Post mostLiked;
-        Post mostShared;
-        User mostActive;
-        User mostFriends;
-        User leastFriends;
+        Post mostViewed = null;
+        Post mostLiked = null;
+        Post mostShared = null;
+        User mostActive = null;
+        User mostFriends = null;
+        User leastFriends = null;
         
         for (int i = 0; i < users; i++) {
-            float loginPercentage = (userList.get(i).loginAmount * 100f) / days;
-            
+            int loginAmount = userList.get(i).loginAmount;
+            float loginPercentage = 0;
+            if (loginAmount != 0) {
+                 loginPercentage = (userList.get(i).loginAmount * 100f) / days;
+            }
+
             System.out.print("User " + userList.get(i).userIDNo + " login %");
             System.out.printf("%.2f", loginPercentage);
             System.out.println();
         }
+        System.out.println("--------------------------------");
+        for (int i = 0; i < postList.size(); i++) {
+            Post currentPost = postList.get(i);
+            System.out.println("Post # " + currentPost.postID + " on Day: " + currentPost.dayNumber
+                + " Posted by: " + currentPost.originalPoster.userIDNo);
+        }
+        int viewTotalPost = 0;
+        int likeTotalPost = 0;
+        int shareTotalPost = 0;
+        for (int i = 0; i < postList.size(); i++) {
+            Post currentPost = postList.get(i);
+            System.out.println("Post # " + currentPost.getID() + " total likes: " + currentPost.getLikes());
+            if (currentPost.getViews() > viewTotalPost) {
+                mostViewed = currentPost;
+                viewTotalPost = currentPost.getViews();
+            }
+            if (currentPost.getLikes() > likeTotalPost) {
+                mostLiked = currentPost;
+                likeTotalPost = currentPost.getLikes();
+            }
+            if (currentPost.getShares() > shareTotalPost) {
+                mostShared = currentPost;
+                shareTotalPost = currentPost.getShares();
+            }
+        }
+        if (mostViewed != null) System.out.println("Most viewed = " + mostViewed.getID());
+        if (mostLiked != null) System.out.println("Most liked = " + mostLiked.getID());
+        if (mostShared != null) System.out.println("Most shared = " + mostShared.getID());
+        
+        
+        
+    }
+
+    public void newPost(User u) {
+        Post newPost = new Post(postList.size(), dayNumber, u);
+        postList.add(newPost);
+        recentPostList.add(newPost);
     }
 }
