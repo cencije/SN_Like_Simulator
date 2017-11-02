@@ -34,18 +34,20 @@ public class User
         rand = new Random();
     } 
 
-    public void checkActivity(ArrayList<Post> postList) {
+    public void checkActivity(ArrayList<Post> postList, ArrayList<User> userList) {
         int generatedChance = rand.nextInt(loginPossibility);
-        if (generatedChance >= 2) { login(postList); }
-        else { System.out.println("User # " + userIDNo + " didnt login."); }
+        if (generatedChance >= 2) { login(postList, userList); }
+        else { 
+            //System.out.println("User # " + userIDNo + " didnt login."); 
+        }
     }
 
-    public void login(ArrayList<Post> postList) {
+    public void login(ArrayList<Post> postList, ArrayList<User> userList) {
         loginAmount++;
-        System.out.println("User # " + userIDNo + " logged in.");
+        //System.out.println("User # " + userIDNo + " logged in.");
         for (int i = 0; i < postList.size(); i++) {
             int likePost = rand.nextInt(outgoingLevel);
-            if (likePost >= 1) {
+            if (likePost >= 2) {
                 if (!postList.get(i).alreadyLiked(userIDNo)) {
                     likeAmount++;
                     postList.get(i).liked(userIDNo);
@@ -54,12 +56,43 @@ public class User
             }
         }
         int genPostChance = rand.nextInt(outgoingLevel);
-        if (genPostChance >= 1) {
+        if (genPostChance >= 2) {
             main.newPost(this);
+        }
+
+        for (int i = 0; i < userList.size(); i++) {
+
+            User otherUser = userList.get(i);
+            int ouID = otherUser.getUserID();
+            if (ouID != userIDNo) {
+                boolean alreadyFriended = false;
+                for (int j = 0; j < friendList.size(); j++) {
+                    if (ouID == friendList.get(j)) {
+                        alreadyFriended = true;
+                        break;    
+                    }
+                }
+                if (alreadyFriended == false) {
+                    int friendRequestChance = rand.nextInt(outgoingLevel);  
+                    if (friendRequestChance >= 2) {
+                        otherUser.receiveFriendRequest(this);
+                    }
+                }
+            }
         }
     }
 
-    public void newFriend(int otherUserID) {
-
+    public void receiveFriendRequest(User otherUser) {
+        int acceptChance = rand.nextInt(outgoingLevel);
+        if (acceptChance >= 2) {
+            friendList.add(otherUser.getUserID());
+            otherUser.linkFriend(this);
+        }
     }
+
+    public void linkFriend(User requestedFriend) {
+        friendList.add(requestedFriend.getUserID());
+    }
+    public int getUserID() { return userIDNo; }
+    public ArrayList<Integer> getFriendList() { return friendList; }
 }

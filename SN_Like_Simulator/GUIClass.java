@@ -30,7 +30,7 @@ public class GUIClass extends JPanel implements ActionListener
     ArrayList<User> userList = new ArrayList<User>();
     ArrayList<Post> postList = new ArrayList<Post>();
     ArrayList<Post> recentPostList = new ArrayList<Post>();
-   
+
     /**
      * Constructor for objects of class GUIClass
      */
@@ -143,7 +143,7 @@ public class GUIClass extends JPanel implements ActionListener
 
     public void makeUsers() {
         for (int i = 0; i < users; i++) {
-            User u = new User(i, (rand.nextInt(9) + 2), (rand.nextInt(9) + 2), this);
+            User u = new User(i, (rand.nextInt(8) + 3), (rand.nextInt(8) + 3), this);
             userList.add(u);
         }
     }
@@ -159,13 +159,13 @@ public class GUIClass extends JPanel implements ActionListener
                     System.out.println("Removing Post # " + recentPostList.get(j).getID());
                     recentPostList.remove(j);
                     j--;
-                    
+
                 }
                 if ((j + 1) > recentPostList.size()) break;
             }
             while(todaysList.size() > 0) {
                 int checkedUser = rand.nextInt(todaysList.size());
-                todaysList.get(checkedUser).checkActivity(recentPostList);
+                todaysList.get(checkedUser).checkActivity(recentPostList, userList);
                 todaysList.remove(checkedUser);
             }
         }
@@ -180,12 +180,12 @@ public class GUIClass extends JPanel implements ActionListener
         User mostActive = null;
         User mostFriends = null;
         User leastFriends = null;
-        
+
         for (int i = 0; i < users; i++) {
             int loginAmount = userList.get(i).loginAmount;
             float loginPercentage = 0;
             if (loginAmount != 0) {
-                 loginPercentage = (userList.get(i).loginAmount * 100f) / days;
+                loginPercentage = (userList.get(i).loginAmount * 100f) / days;
             }
 
             System.out.print("User " + userList.get(i).userIDNo + " login %");
@@ -220,11 +220,18 @@ public class GUIClass extends JPanel implements ActionListener
         if (mostViewed != null) System.out.println("Most viewed = " + mostViewed.getID());
         if (mostLiked != null) System.out.println("Most liked = " + mostLiked.getID());
         if (mostShared != null) System.out.println("Most shared = " + mostShared.getID());
-        
-        
-        
-    }
 
+        for (int i = 0; i < users; i++) {
+            User thisUser = userList.get(i);
+            System.out.println();
+            System.out.print("User " +thisUser.getUserID() + " list = {");
+            for (int j = 0; j < thisUser.getFriendList().size(); j++) {
+                System.out.print(thisUser.getFriendList().get(j) + ", ");
+            }
+            System.out.print("}");
+        }
+
+    }
     public void newPost(User u) {
         Post newPost = new Post(postList.size(), dayNumber, u);
         postList.add(newPost);
