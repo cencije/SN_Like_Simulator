@@ -48,7 +48,8 @@ public class User
         for (int i = 0; i < postList.size(); i++) {
             int likePost = rand.nextInt(outgoingLevel);
             if (likePost >= 2) {
-                if (!postList.get(i).alreadyLiked(userIDNo)) {
+                if (!postList.get(i).alreadyLiked(userIDNo)
+                    && postList.get(i).originalPoster.getUserID() != userIDNo) {
                     likeAmount++;
                     postList.get(i).liked(userIDNo);
                 }
