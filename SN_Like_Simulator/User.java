@@ -39,24 +39,27 @@ public class User
         if (generatedChance >= 2) { login(postList); }
         else { System.out.println("User # " + userIDNo + " didnt login."); }
     }
+
     public void login(ArrayList<Post> postList) {
         loginAmount++;
         System.out.println("User # " + userIDNo + " logged in.");
         for (int i = 0; i < postList.size(); i++) {
             int likePost = rand.nextInt(outgoingLevel);
             if (likePost >= 1) {
-                likeAmount++;
-                postList.get(i).liked();
+                if (!postList.get(i).alreadyLiked(userIDNo)) {
+                    likeAmount++;
+                    postList.get(i).liked(userIDNo);
+                }
                 //System.out.println("User # " + userIDNo + " liked Post # " + i);
             }
         }
         int genPostChance = rand.nextInt(outgoingLevel);
         if (genPostChance >= 1) {
-           main.newPost(this);
+            main.newPost(this);
         }
     }
 
     public void newFriend(int otherUserID) {
-        
+
     }
 }

@@ -155,7 +155,7 @@ public class GUIClass extends JPanel implements ActionListener
             for (int j = 0; j < recentPostList.size(); j++) {
                 Post thisPost = recentPostList.get(j);
                 int dayNo = thisPost.getOriginalDay();
-                if ((i - dayNo) > 5) {
+                if ((i - dayNo) > 3) {
                     System.out.println("Removing Post # " + recentPostList.get(j).getID());
                     recentPostList.remove(j);
                     j--;

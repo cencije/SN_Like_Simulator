@@ -1,4 +1,4 @@
-
+import java.util.ArrayList;
 /**
  * Write a description of class Post here.
  * 
@@ -13,6 +13,7 @@ public class Post
     int views;
     User originalPoster;
     int dayNumber;
+    ArrayList<Integer> userIDLikers = new ArrayList<Integer>();
     /**
      * Constructor for objects of class Post
      */
@@ -26,7 +27,19 @@ public class Post
         originalPoster = ogPoster;
         dayNumber = dayNo;
     }
-    public void liked() { likes++; }
+    public void liked(int userID) { 
+        likes++; 
+        userIDLikers.add(userID);
+    }
+    public boolean alreadyLiked(int userID) {
+        for (int i = 0; i < userIDLikers.size(); i++) {
+            if (userIDLikers.get(i) == userID) {
+                System.out.println("User " + userID + " already liked Post " + postID);
+                return true;
+            }
+        }
+        return false;
+    }
     public void shared() { shares++; }
     public void viewed() { views++; }
     public int getID() { return postID; }
