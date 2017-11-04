@@ -47,4 +47,5 @@ public class Post
     public int getShares() { return shares; }
     public int getViews() { return views; }
     public int getOriginalDay() { return dayNumber; }
+    public User getOriginalPoster() { return originalPoster; }
 }

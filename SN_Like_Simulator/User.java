@@ -47,13 +47,17 @@ public class User
         //System.out.println("User # " + userIDNo + " logged in.");
         for (int i = 0; i < postList.size(); i++) {
             int likePost = rand.nextInt(outgoingLevel);
+            Post viewingPost = postList.get(i);
             if (likePost >= 2) {
-                if (!postList.get(i).alreadyLiked(userIDNo)
-                    && postList.get(i).originalPoster.getUserID() != userIDNo) {
-                    likeAmount++;
-                    postList.get(i).liked(userIDNo);
+                boolean isViewable = withinFriends(viewingPost.getOriginalPoster());
+                if (isViewable) {
+                    if (!viewingPost.alreadyLiked(userIDNo)
+                    && viewingPost.originalPoster.getUserID() != userIDNo) {
+                        likeAmount++;
+                        viewingPost.liked(userIDNo);
+                    }
                 }
-                //System.out.println("User # " + userIDNo + " liked Post # " + i);
+                else System.out.println("User # " + userIDNo + " cant see Post " + viewingPost.getID());
             }
         }
         int genPostChance = rand.nextInt(outgoingLevel);
@@ -94,6 +98,15 @@ public class User
     public void linkFriend(User requestedFriend) {
         friendList.add(requestedFriend.getUserID());
     }
+
+    public boolean withinFriends(User userOfPost) {
+        for (int i = 0; i < friendList.size(); i++) {
+            if (friendList.get(i) == userOfPost.getUserID()) return true;
+        }
+        return false;
+    }
+
     public int getUserID() { return userIDNo; }
+
     public ArrayList<Integer> getFriendList() { return friendList; }
 }
