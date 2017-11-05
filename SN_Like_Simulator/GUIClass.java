@@ -19,6 +19,7 @@ public class GUIClass extends JPanel implements ActionListener
 {
     JFrame mainFrame;
     JButton btnParameters, btnRun;
+    JCheckBox chkShare;
     JTextField tfUsers, tfDays, tfAvgLogin, tfYears;
     JLabel lblUsers, lblDays, dummyLabel;
     Color lightGreen = new Color(204, 255, 153);
@@ -82,6 +83,11 @@ public class GUIClass extends JPanel implements ActionListener
         tfDays.setEditable(true);
         mainFrame.add(tfDays);
 
+        chkShare = new JCheckBox("Users can share posts");
+        chkShare.setBounds(5, 100, 175, 30);
+        chkShare.setForeground(Color.WHITE);
+        mainFrame.add(chkShare);
+        
         dummyLabel = new JLabel("");
         mainFrame.add(dummyLabel);
 
