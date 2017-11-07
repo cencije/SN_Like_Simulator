@@ -6,8 +6,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
-import javax.swing.plaf.LayerUI;
-import javax.swing.text.JTextComponent;
 
 /**
  * Write a description of class GUIClass here.
@@ -31,7 +29,7 @@ public class GUIClass extends JPanel implements ActionListener
     ArrayList<User> userList = new ArrayList<User>();
     ArrayList<Post> postList = new ArrayList<Post>();
     ArrayList<Post> recentPostList = new ArrayList<Post>();
-
+    ArrayList<Integer> loginNumberList;
     /**
      * Constructor for objects of class GUIClass
      */
@@ -155,6 +153,7 @@ public class GUIClass extends JPanel implements ActionListener
     }
 
     public void runSimulation() {
+        loginNumberList = new ArrayList<Integer>();
         for (int i = 1; i <= days; i++) {
             dayNumber = i;
             ArrayList<User> todaysList = new ArrayList<User>(userList);
@@ -169,11 +168,16 @@ public class GUIClass extends JPanel implements ActionListener
                 }
                 if ((j + 1) > recentPostList.size()) break;
             }
+            int todaysLogins = 0;
             while(todaysList.size() > 0) {
                 int checkedUser = rand.nextInt(todaysList.size());
-                todaysList.get(checkedUser).checkActivity(recentPostList, userList);
+                boolean loggedIn = todaysList.get(checkedUser).checkActivity(recentPostList, userList);
+                if (loggedIn) {
+                    todaysLogins++;
+                }
                 todaysList.remove(checkedUser);
             }
+            loginNumberList.add(todaysLogins);
         }
     }
 
@@ -236,11 +240,25 @@ public class GUIClass extends JPanel implements ActionListener
             }
             System.out.print("}");
         }
-
+        for (int i = 0; i < days; i++) {
+            System.out.println(loginNumberList.get(i) + ", ");
+        }
+        createGraphFrame();
     }
+    
     public void newPost(User u) {
         Post newPost = new Post(postList.size(), dayNumber, u);
         postList.add(newPost);
         recentPostList.add(newPost);
+    }
+    
+    public void createGraphFrame() {
+        
+        JFrame gvFrame = new JFrame("Graphical View");
+        Grapher g = new Grapher(loginNumberList, days);
+        gvFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, aqua));
+        gvFrame.add(g);
+        gvFrame.setSize(400,400);
+        gvFrame.setVisible(true);
     }
 }

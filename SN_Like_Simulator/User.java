@@ -34,10 +34,14 @@ public class User
         rand = new Random();
     } 
 
-    public void checkActivity(ArrayList<Post> postList, ArrayList<User> userList) {
+    public boolean checkActivity(ArrayList<Post> postList, ArrayList<User> userList) {
         int generatedChance = rand.nextInt(loginPossibility);
-        if (generatedChance >= 2) { login(postList, userList); }
+        if (generatedChance >= 2) { 
+            login(postList, userList); 
+            return true;
+        }
         else { 
+            return false;
             //System.out.println("User # " + userIDNo + " didnt login."); 
         }
     }

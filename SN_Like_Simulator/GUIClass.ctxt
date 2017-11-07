@@ -16,4 +16,6 @@ comment6.params=
 comment6.target=void\ getStats()
 comment7.params=u
 comment7.target=void\ newPost(User)
-numComments=8
+comment8.params=
+comment8.target=void\ createGraphFrame()
+numComments=9
