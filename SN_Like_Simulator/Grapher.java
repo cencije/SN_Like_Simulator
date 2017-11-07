@@ -22,14 +22,15 @@ public class Grapher extends JPanel {
     Stroke GRAPH_STROKE = new BasicStroke(1f);
     
     int numDays = 0;
-    
+    int numUsers = 0;
     ArrayList<Integer> loginPoints = new ArrayList<Integer>();
     /**
      * Constructor for objects of class Grapher
      */
-    public Grapher(ArrayList<Integer> pointList, int days) {
+    public Grapher(ArrayList<Integer> pointList, int days, int users) {
         loginPoints = pointList;
         numDays = days;  
+        numUsers = users;
     }
 
     public void createGUI() {
@@ -44,13 +45,19 @@ public class Grapher extends JPanel {
         g.fillRect(0, 0, 400, 400);
         
         g.setColor(lightGreen);
-        int scale = 400 / numDays;
+        int scaleDays = 400 / numDays;
+        int scaleUsers = 400 / numUsers;
         for (int i = 0; i < numDays - 1; i++) {
-            g.drawLine(i * scale, 400 - loginPoints.get(i), (i + 1) * scale, 400 - loginPoints.get(i+1));
+            g.drawLine(i * scaleDays, 400 - (scaleUsers * loginPoints.get(i)), (i + 1) * scaleDays, 400 -  (scaleUsers * loginPoints.get(i+1)));
         }
 
+        /*for (int i = 0; i < numDays - 1; i++) {
+            g.drawLine(i * scale, 400 - loginPoints.get(i), (i + 1) * scale, 400 - loginPoints.get(i+1));
+        }
         
-   
+        for (int i = 0; i < numDays - 1; i++) {
+            g.drawLine(i * scale, 400 - loginPoints.get(i), (i + 1) * scale, 400 - loginPoints.get(i+1));
+        }*/
     }
 
 }

@@ -255,7 +255,7 @@ public class GUIClass extends JPanel implements ActionListener
     public void createGraphFrame() {
         
         JFrame gvFrame = new JFrame("Graphical View");
-        Grapher g = new Grapher(loginNumberList, days);
+        Grapher g = new Grapher(loginNumberList, days, users);
         gvFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, aqua));
         gvFrame.add(g);
         gvFrame.setSize(400,400);
