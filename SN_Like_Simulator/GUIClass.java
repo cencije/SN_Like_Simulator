@@ -31,7 +31,7 @@ public class GUIClass extends JPanel implements ActionListener
     ArrayList<User> userList = new ArrayList<User>();
     ArrayList<Post> postList = new ArrayList<Post>();
     ArrayList<Post> recentPostList = new ArrayList<Post>();
-    ArrayList<Integer> loginNumberList;
+    ArrayList<Integer> loginNumberList = new ArrayList<Integer>();
     ArrayList<Integer> totalPostsDaily = new ArrayList<Integer>();
     /**
      * Constructor for objects of class GUIClass
@@ -111,6 +111,8 @@ public class GUIClass extends JPanel implements ActionListener
         if (evt.getActionCommand().equals("Set Parameters")) {
             userList.clear();
             postList.clear();
+            loginNumberList.clear();
+            totalPostsDaily.clear();
             boolean validUsersNumber = true;
             boolean validDaysNumber = true;
             String usersString = tfUsers.getText();
@@ -166,14 +168,13 @@ public class GUIClass extends JPanel implements ActionListener
 
     public void makeUsers() {
         for (int i = 0; i < users; i++) {
-            User u = new User(i, (rand.nextInt(8) + 3), (rand.nextInt(8) + 3), this, seed);
+            User u = new User(i, (rand.nextInt(8) + 3), (rand.nextInt(8) + 3), this);//, seed);
             userList.add(u);
         }
     }
 
     public void runSimulation() {
-        loginNumberList = new ArrayList<Integer>();
-        for (int i = 0; i < days; i++) {
+        for (int i = 1; i <= days; i++) {
             numberPostsToday = 0;
             dayNumber = i;
             ArrayList<User> todaysList = new ArrayList<User>(userList);
@@ -253,16 +254,7 @@ public class GUIClass extends JPanel implements ActionListener
         if (mostViewed != null) System.out.println("Most viewed = " + mostViewed.getID());
         if (mostLiked != null) System.out.println("Most liked = " + mostLiked.getID());
         if (mostShared != null) System.out.println("Most shared = " + mostShared.getID());
-
-        /*for (int i = 0; i < users; i++) {
-        User thisUser = userList.get(i);
-        System.out.println();
-        System.out.print("User " + thisUser.getUserID() + " list = {");
-        for (int j = 0; j < thisUser.getFriendList().size(); j++) {
-        System.out.print(thisUser.getFriendList().get(j) + ", ");
-        }
-        System.out.print("}");
-        }*/
+        
         System.out.println();
         for (int i = 0; i < days; i++) {
             System.out.print(loginNumberList.get(i) + "| ");
@@ -276,10 +268,11 @@ public class GUIClass extends JPanel implements ActionListener
     }
 
     public void newPost(User u) {
+        numberPostsToday++;
         Post newPost = new Post(postList.size(), dayNumber, u);
         postList.add(newPost);
         recentPostList.add(newPost);
-        numberPostsToday++;
+        
     }
 
     public void createGraphFrame() {

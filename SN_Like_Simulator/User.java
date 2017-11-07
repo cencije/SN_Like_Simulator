@@ -26,12 +26,12 @@ public class User
 
     }
 
-    public User(int id, int loginPos, int outgoingLVL, GUIClass mainGui, int seed) {
+    public User(int id, int loginPos, int outgoingLVL, GUIClass mainGui) {
         main = mainGui;
         userIDNo = id;
         loginPossibility = loginPos;
         outgoingLevel = outgoingLVL;
-        rand = new Random(seed);
+        rand = new Random();
     } 
 
     public boolean checkActivity(ArrayList<Post> postList, ArrayList<User> userList) {

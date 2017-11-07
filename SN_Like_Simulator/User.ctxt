@@ -2,8 +2,8 @@
 comment0.params=
 comment0.target=User()
 comment0.text=\n\ Constructor\ for\ objects\ of\ class\ User\n
-comment1.params=id\ loginPos\ outgoingLVL\ mainGui\ seed
-comment1.target=User(int,\ int,\ int,\ GUIClass,\ int)
+comment1.params=id\ loginPos\ outgoingLVL\ mainGui
+comment1.target=User(int,\ int,\ int,\ GUIClass)
 comment2.params=postList\ userList
 comment2.target=boolean\ checkActivity(java.util.ArrayList,\ java.util.ArrayList)
 comment3.params=postList\ userList
