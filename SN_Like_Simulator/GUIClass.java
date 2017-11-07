@@ -18,13 +18,14 @@ public class GUIClass extends JPanel implements ActionListener
     JFrame mainFrame;
     JButton btnParameters, btnRun;
     JCheckBox chkShare;
-    JTextField tfUsers, tfDays, tfAvgLogin, tfYears;
+    JTextField tfUsers, tfDays, tfAvgLogin, tfYears, tfSeed;
     JLabel lblUsers, lblDays, dummyLabel;
     Color lightGreen = new Color(204, 255, 153);
     Color aqua = new Color(0, 255, 255);
     int days, users;
     int dayNumber;
     int numberPostsToday = 0;
+    int seed = 0;
     Random rand;
 
     ArrayList<User> userList = new ArrayList<User>();
@@ -37,7 +38,7 @@ public class GUIClass extends JPanel implements ActionListener
      */
     public GUIClass()
     {
-        rand = new Random();
+
     }
 
     public void makeGUI() {
@@ -83,11 +84,16 @@ public class GUIClass extends JPanel implements ActionListener
         tfDays.setEditable(true);
         mainFrame.add(tfDays);
 
+        tfSeed = new JTextField("");
+        tfSeed.setBounds(120, 100, 100, 30);
+        tfSeed.setEditable(true);
+        mainFrame.add(tfSeed);
+
         chkShare = new JCheckBox("Users can share posts");
-        chkShare.setBounds(5, 100, 175, 30);
+        chkShare.setBounds(5, 130, 175, 30);
         chkShare.setForeground(Color.WHITE);
         mainFrame.add(chkShare);
-        
+
         dummyLabel = new JLabel("");
         mainFrame.add(dummyLabel);
 
@@ -97,6 +103,7 @@ public class GUIClass extends JPanel implements ActionListener
     public void actionPerformed(ActionEvent evt) {
         int timesTried = 0;
         if (evt.getActionCommand().equals("Run")) {
+
             setupSimulation();
             btnRun.setEnabled(false);
             btnParameters.setEnabled(true);
@@ -108,6 +115,16 @@ public class GUIClass extends JPanel implements ActionListener
             boolean validDaysNumber = true;
             String usersString = tfUsers.getText();
             String daysString = tfDays.getText();
+            String seedString = tfSeed.getText();
+
+            rand = new Random();
+            if (seedString.equals("")) {
+                rand = new Random(10);
+            }
+            else {
+                int seed = Integer.parseInt(seedString);
+                rand = new Random(seed);
+            }
 
             if (usersString.equals("")) {
                 System.out.println("Invalid Users Value");
@@ -149,14 +166,14 @@ public class GUIClass extends JPanel implements ActionListener
 
     public void makeUsers() {
         for (int i = 0; i < users; i++) {
-            User u = new User(i, (rand.nextInt(8) + 3), (rand.nextInt(8) + 3), this);
+            User u = new User(i, (rand.nextInt(8) + 3), (rand.nextInt(8) + 3), this, seed);
             userList.add(u);
         }
     }
 
     public void runSimulation() {
         loginNumberList = new ArrayList<Integer>();
-        for (int i = 1; i <= days; i++) {
+        for (int i = 0; i < days; i++) {
             numberPostsToday = 0;
             dayNumber = i;
             ArrayList<User> todaysList = new ArrayList<User>(userList);
@@ -172,7 +189,9 @@ public class GUIClass extends JPanel implements ActionListener
                 if ((j + 1) > recentPostList.size()) break;
             }
             int todaysLogins = 0;
+
             while(todaysList.size() > 0) {
+
                 int checkedUser = rand.nextInt(todaysList.size());
                 boolean loggedIn = todaysList.get(checkedUser).checkActivity(recentPostList, userList);
                 if (loggedIn) {
@@ -235,30 +254,36 @@ public class GUIClass extends JPanel implements ActionListener
         if (mostLiked != null) System.out.println("Most liked = " + mostLiked.getID());
         if (mostShared != null) System.out.println("Most shared = " + mostShared.getID());
 
-        for (int i = 0; i < users; i++) {
-            User thisUser = userList.get(i);
-            System.out.println();
-            System.out.print("User " +thisUser.getUserID() + " list = {");
-            for (int j = 0; j < thisUser.getFriendList().size(); j++) {
-                System.out.print(thisUser.getFriendList().get(j) + ", ");
-            }
-            System.out.print("}");
+        /*for (int i = 0; i < users; i++) {
+        User thisUser = userList.get(i);
+        System.out.println();
+        System.out.print("User " + thisUser.getUserID() + " list = {");
+        for (int j = 0; j < thisUser.getFriendList().size(); j++) {
+        System.out.print(thisUser.getFriendList().get(j) + ", ");
         }
+        System.out.print("}");
+        }*/
+        System.out.println();
         for (int i = 0; i < days; i++) {
-            System.out.println(loginNumberList.get(i) + ", ");
+            System.out.print(loginNumberList.get(i) + "| ");
+            System.out.println(totalPostsDaily.get(i));
+        }
+        System.out.println();
+        for (int i = 0; i < days; i++) {
+            System.out.println(totalPostsDaily.get(i));
         }
         createGraphFrame();
     }
-    
+
     public void newPost(User u) {
         Post newPost = new Post(postList.size(), dayNumber, u);
         postList.add(newPost);
         recentPostList.add(newPost);
         numberPostsToday++;
     }
-    
+
     public void createGraphFrame() {
-        
+
         JFrame gvFrame = new JFrame("Graphical View");
         Grapher g = new Grapher(loginNumberList, totalPostsDaily, days, users);
         gvFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, aqua));

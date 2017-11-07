@@ -26,12 +26,12 @@ public class User
 
     }
 
-    public User(int id, int loginPos, int outgoingLVL, GUIClass mainGui) {
+    public User(int id, int loginPos, int outgoingLVL, GUIClass mainGui, int seed) {
         main = mainGui;
         userIDNo = id;
         loginPossibility = loginPos;
         outgoingLevel = outgoingLVL;
-        rand = new Random();
+        rand = new Random(seed);
     } 
 
     public boolean checkActivity(ArrayList<Post> postList, ArrayList<User> userList) {
@@ -48,7 +48,7 @@ public class User
 
     public void login(ArrayList<Post> postList, ArrayList<User> userList) {
         loginAmount++;
-        //System.out.println("User # " + userIDNo + " logged in.");
+        System.out.println("User # " + userIDNo + " logged in.");
         for (int i = 0; i < postList.size(); i++) {
             int likePost = rand.nextInt(outgoingLevel);
             Post viewingPost = postList.get(i);
@@ -61,7 +61,7 @@ public class User
                         viewingPost.liked(userIDNo);
                     }
                 }
-                else System.out.println("User # " + userIDNo + " cant see Post " + viewingPost.getID());
+                //else System.out.println("User # " + userIDNo + " cant see Post " + viewingPost.getID());
             }
         }
         int genPostChance = rand.nextInt(outgoingLevel);
@@ -70,7 +70,6 @@ public class User
         }
 
         for (int i = 0; i < userList.size(); i++) {
-
             User otherUser = userList.get(i);
             int ouID = otherUser.getUserID();
             if (ouID != userIDNo) {

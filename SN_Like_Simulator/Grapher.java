@@ -2,10 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
-import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.Random;
+
 
 /**
  * Write a description of class Grapher here.
@@ -43,6 +41,9 @@ public class Grapher extends JPanel {
 
         g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, 400, 400);
+        
+        //g2.setColor(Color.WHITE);
+        //g2.drawRect(10, 10, 390, 390)
 
         g2.setStroke(GRAPH_STROKE);
         float scaleDays = (float) 400 / (numDays - 1);
