@@ -24,12 +24,14 @@ public class GUIClass extends JPanel implements ActionListener
     Color aqua = new Color(0, 255, 255);
     int days, users;
     int dayNumber;
+    int numberPostsToday = 0;
     Random rand;
 
     ArrayList<User> userList = new ArrayList<User>();
     ArrayList<Post> postList = new ArrayList<Post>();
     ArrayList<Post> recentPostList = new ArrayList<Post>();
     ArrayList<Integer> loginNumberList;
+    ArrayList<Integer> totalPostsDaily = new ArrayList<Integer>();
     /**
      * Constructor for objects of class GUIClass
      */
@@ -155,6 +157,7 @@ public class GUIClass extends JPanel implements ActionListener
     public void runSimulation() {
         loginNumberList = new ArrayList<Integer>();
         for (int i = 1; i <= days; i++) {
+            numberPostsToday = 0;
             dayNumber = i;
             ArrayList<User> todaysList = new ArrayList<User>(userList);
             for (int j = 0; j < recentPostList.size(); j++) {
@@ -178,6 +181,7 @@ public class GUIClass extends JPanel implements ActionListener
                 todaysList.remove(checkedUser);
             }
             loginNumberList.add(todaysLogins);
+            totalPostsDaily.add(numberPostsToday);
         }
     }
 
@@ -250,12 +254,13 @@ public class GUIClass extends JPanel implements ActionListener
         Post newPost = new Post(postList.size(), dayNumber, u);
         postList.add(newPost);
         recentPostList.add(newPost);
+        numberPostsToday++;
     }
     
     public void createGraphFrame() {
         
         JFrame gvFrame = new JFrame("Graphical View");
-        Grapher g = new Grapher(loginNumberList, days, users);
+        Grapher g = new Grapher(loginNumberList, totalPostsDaily, days, users);
         gvFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, aqua));
         gvFrame.add(g);
         gvFrame.setSize(400,400);
