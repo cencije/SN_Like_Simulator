@@ -17,7 +17,7 @@ public class GUIClass extends JPanel implements ActionListener
 {
     JFrame mainFrame;
     JButton btnParameters, btnRun;
-    JCheckBox chkShare;
+    JCheckBox chkShare, chkGrids;
     JTextField tfUsers, tfDays, tfAvgLogin, tfYears, tfSeed;
     JLabel lblUsers, lblDays, dummyLabel;
     Color lightGreen = new Color(204, 255, 153);
@@ -26,6 +26,7 @@ public class GUIClass extends JPanel implements ActionListener
     int dayNumber;
     int numberPostsToday = 0;
     int seed = 0;
+    boolean showGridLines;
     Random rand;
 
     ArrayList<User> userList = new ArrayList<User>();
@@ -94,6 +95,11 @@ public class GUIClass extends JPanel implements ActionListener
         chkShare.setForeground(Color.WHITE);
         mainFrame.add(chkShare);
 
+        chkGrids = new JCheckBox("Show gridlines on graph");
+        chkGrids.setBounds(5, 160, 200, 30);
+        chkGrids.setForeground(Color.WHITE);
+        mainFrame.add(chkGrids);
+        
         dummyLabel = new JLabel("");
         mainFrame.add(dummyLabel);
 
@@ -103,10 +109,13 @@ public class GUIClass extends JPanel implements ActionListener
     public void actionPerformed(ActionEvent evt) {
         int timesTried = 0;
         if (evt.getActionCommand().equals("Run")) {
-
+            if (chkGrids.isSelected()) {
+                showGridLines = true;
+            }
+            else showGridLines = false;
             setupSimulation();
             btnRun.setEnabled(false);
-            btnParameters.setEnabled(true);
+            
         }
         if (evt.getActionCommand().equals("Set Parameters")) {
             userList.clear();
@@ -119,7 +128,7 @@ public class GUIClass extends JPanel implements ActionListener
             String daysString = tfDays.getText();
             String seedString = tfSeed.getText();
 
-            rand = new Random();
+            rand = new Random();    
             if (seedString.equals("")) {
                 rand = new Random(10);
             }
@@ -127,7 +136,6 @@ public class GUIClass extends JPanel implements ActionListener
                 int seed = Integer.parseInt(seedString);
                 rand = new Random(seed);
             }
-
             if (usersString.equals("")) {
                 System.out.println("Invalid Users Value");
                 validUsersNumber = false; 
@@ -215,7 +223,7 @@ public class GUIClass extends JPanel implements ActionListener
         User mostFriends = null;
         User leastFriends = null;
 
-        for (int i = 0; i < users; i++) {
+        /*for (int i = 0; i < users; i++) {
             int loginAmount = userList.get(i).loginAmount;
             float loginPercentage = 0;
             if (loginAmount != 0) {
@@ -231,13 +239,13 @@ public class GUIClass extends JPanel implements ActionListener
             Post currentPost = postList.get(i);
             System.out.println("Post # " + currentPost.postID + " on Day: " + currentPost.dayNumber
                 + " Posted by: " + currentPost.originalPoster.userIDNo);
-        }
+        }*/
         int viewTotalPost = 0;
         int likeTotalPost = 0;
         int shareTotalPost = 0;
         for (int i = 0; i < postList.size(); i++) {
             Post currentPost = postList.get(i);
-            System.out.println("Post # " + currentPost.getID() + " total likes: " + currentPost.getLikes());
+            //System.out.println("Post # " + currentPost.getID() + " total likes: " + currentPost.getLikes());
             if (currentPost.getViews() > viewTotalPost) {
                 mostViewed = currentPost;
                 viewTotalPost = currentPost.getViews();
@@ -269,7 +277,7 @@ public class GUIClass extends JPanel implements ActionListener
     public void createGraphFrame() {
 
         JFrame gvFrame = new JFrame("Graphical View");
-        Grapher g = new Grapher(loginNumberList, totalPostsDaily, days, users);
+        Grapher g = new Grapher(loginNumberList, totalPostsDaily, days, users, showGridLines);
         gvFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, aqua));
         gvFrame.add(g);
         gvFrame.setSize(400,400);

@@ -48,7 +48,7 @@ public class User
 
     public void login(ArrayList<Post> postList, ArrayList<User> userList) {
         loginAmount++;
-        System.out.println("User # " + userIDNo + " logged in.");
+        //System.out.println("User # " + userIDNo + " logged in.");
         for (int i = 0; i < postList.size(); i++) {
             int likePost = rand.nextInt(outgoingLevel);
             Post viewingPost = postList.get(i);
