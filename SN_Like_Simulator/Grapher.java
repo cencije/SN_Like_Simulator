@@ -19,6 +19,7 @@ public class Grapher extends JPanel {
     Color aqua = new Color(0, 255, 255);
 
     Stroke GRAPH_STROKE = new BasicStroke(1f);
+    Stroke GRID_STROKE = new BasicStroke(0.25f);
 
     int numDays = 0;
     int numUsers = 0;
@@ -37,37 +38,56 @@ public class Grapher extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        this.setBackground(Color.WHITE);
-
-        g2.setColor(Color.BLACK);
-        g2.fillRect(0, 0, 400, 400);
+        this.setBackground(Color.BLACK);
         
-        //g2.setColor(Color.WHITE);
-        //g2.drawRect(10, 10, 390, 390)
-
-        g2.setStroke(GRAPH_STROKE);
-        float scaleDays = (float) 400 / (numDays - 1);
-        float scaleUsers = (float) 400 / numUsers;
+        g2.setColor(Color.WHITE);
+        g2.drawRect(20, 20, 340, 320);
+        
+        String numUsersString = Integer.toString(numUsers);
+        String numDaysString = Integer.toString(numDays);
+        g2.setFont(new Font("TimesRoman", Font.PLAIN, 10)); 
+        g2.drawString(numUsersString, 5, 20);
+        g2.drawString("0", 10, 341);
+        g2.drawString("0", 17, 350);
+        g2.drawString(numDaysString, 360, 350);
+        g2.setStroke(GRID_STROKE);
+        float scaleDays = (float) 340 / (numDays - 1);
+        float scaleUsers = (float) 320 / numUsers;
         //int scalePosts = 400 / numPosts;
+        g2.setColor(Color.YELLOW);
+        for (int i = 1; i < numDays - 1; i++) {
+            g2.draw(new Line2D.Float(20 + (i * scaleDays), 20, 20 + (i * scaleDays), 340)); 
+            
+        }
+        for (int i = 1; i < numUsers - 1; i++) {
+            g2.draw(new Line2D.Float(20, 20 + (i * scaleUsers), 360, 20 + (i * scaleUsers)));
+        }
+        g2.setStroke(GRAPH_STROKE);
         for (int i = 0; i < numDays - 1; i++) {
             g2.setColor(lightGreen);
-            g2.draw(new Line2D.Float(i * scaleDays, 400 - (scaleUsers * loginPoints.get(i)), 
-                    (i + 1) * scaleDays, 400 - (scaleUsers * loginPoints.get(i+1))));
+            g2.draw(new Line2D.Float((20 + (i * scaleDays)), 340 - (scaleUsers * loginPoints.get(i)), 
+                    (20 + ((i + 1) * scaleDays)), 340 - (scaleUsers * loginPoints.get(i+1))));
             g2.setColor(aqua);
-            Ellipse2D.Double shape = new Ellipse2D.Double((i * scaleDays) - 1, 
-                    (400 - (scaleUsers * loginPoints.get(i))) - 1, 2 , 2);
+            Ellipse2D.Double shape = new Ellipse2D.Double((20 + (i * scaleDays)) - 1, 
+                    (340 - (scaleUsers * loginPoints.get(i))) - 1, 2 , 2);
             g2.draw(shape);
         }
-
+        Ellipse2D.Double lastDotLogin = new Ellipse2D.Double((20 + ((numDays-1) * scaleDays)) - 1, 
+                    (340 - (scaleUsers * loginPoints.get(numDays-1))) - 1, 2 , 2);
+        g2.draw(lastDotLogin);
         for (int i = 0; i < numDays - 1; i++) {
             g2.setColor(Color.RED);
-            g2.draw(new Line2D.Float(i * scaleDays, 400 - (scaleUsers * postDailyPoints.get(i)), 
-                    (i + 1) * scaleDays, 400 - (scaleUsers * postDailyPoints.get(i + 1))));
+            g2.draw(new Line2D.Float((20 + (i * scaleDays)), 340 - (scaleUsers * postDailyPoints.get(i)), 
+                    (20 + ((i + 1) * scaleDays)), 340 - (scaleUsers * postDailyPoints.get(i + 1))));
             g2.setColor(aqua);
-            Ellipse2D.Double shape = new Ellipse2D.Double((i * scaleDays) - 1, 
-                    (400 - (scaleUsers * postDailyPoints.get(i))) - 1, 2 , 2);
+            Ellipse2D.Double shape = new Ellipse2D.Double((20 + (i * scaleDays)) - 1, 
+                    (340 - (scaleUsers * postDailyPoints.get(i))) - 1, 2 , 2);
             g2.draw(shape);
         }
+        
+        Ellipse2D.Double lastDotPost = new Ellipse2D.Double((20 + ((numDays-1) * scaleDays)) - 1, 
+                    (340 - (scaleUsers * postDailyPoints.get(numDays-1))) - 1, 2 , 2);
+        g2.draw(lastDotPost);
         /*for (int i = 0; i < numDays - 1; i++) {
         g.drawLine(i * scale, 400 - loginPoints.get(i), (i + 1) * scale, 400 - loginPoints.get(i+1));
         }*/

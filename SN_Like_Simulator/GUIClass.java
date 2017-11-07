@@ -254,16 +254,7 @@ public class GUIClass extends JPanel implements ActionListener
         if (mostViewed != null) System.out.println("Most viewed = " + mostViewed.getID());
         if (mostLiked != null) System.out.println("Most liked = " + mostLiked.getID());
         if (mostShared != null) System.out.println("Most shared = " + mostShared.getID());
-        
-        System.out.println();
-        for (int i = 0; i < days; i++) {
-            System.out.print(loginNumberList.get(i) + "| ");
-            System.out.println(totalPostsDaily.get(i));
-        }
-        System.out.println();
-        for (int i = 0; i < days; i++) {
-            System.out.println(totalPostsDaily.get(i));
-        }
+
         createGraphFrame();
     }
 
