@@ -280,7 +280,7 @@ public class GUIClass extends JPanel implements ActionListener
         Grapher g = new Grapher(loginNumberList, totalPostsDaily, days, users, showGridLines);
         gvFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, aqua));
         gvFrame.add(g);
-        gvFrame.setSize(400,400);
+        gvFrame.setSize(600, 600);
         gvFrame.setVisible(true);
     }
 }
