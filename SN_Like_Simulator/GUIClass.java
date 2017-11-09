@@ -17,7 +17,7 @@ public class GUIClass extends JPanel implements ActionListener
 {
     JFrame mainFrame;
     JButton btnParameters, btnRun;
-    JCheckBox chkShare, chkGrids;
+    JCheckBox chkShare, chkGrids, chkLogins, chkPosts;
     JTextField tfUsers, tfDays, tfAvgLogin, tfYears, tfSeed;
     JLabel lblUsers, lblDays, dummyLabel;
     Color lightGreen = new Color(204, 255, 153);
@@ -26,7 +26,7 @@ public class GUIClass extends JPanel implements ActionListener
     int dayNumber;
     int numberPostsToday = 0;
     int seed = 0;
-    boolean showGridLines;
+    boolean showGridLines, showLoginsLine, showPostsLine;
     Random rand;
 
     ArrayList<User> userList = new ArrayList<User>();
@@ -100,6 +100,16 @@ public class GUIClass extends JPanel implements ActionListener
         chkGrids.setForeground(Color.WHITE);
         mainFrame.add(chkGrids);
         
+        chkLogins = new JCheckBox("Show logins line.");
+        chkLogins.setBounds(5, 190, 200, 30);
+        chkLogins.setForeground(Color.WHITE);
+        mainFrame.add(chkLogins);
+        
+        chkPosts = new JCheckBox("Show posts line.");
+        chkPosts.setBounds(5, 220, 200, 30);
+        chkPosts.setForeground(Color.WHITE);
+        mainFrame.add(chkPosts);
+        
         dummyLabel = new JLabel("");
         mainFrame.add(dummyLabel);
 
@@ -113,6 +123,14 @@ public class GUIClass extends JPanel implements ActionListener
                 showGridLines = true;
             }
             else showGridLines = false;
+            if (chkLogins.isSelected()) {
+                showLoginsLine = true;
+            }
+            else showLoginsLine = false;
+            if (chkPosts.isSelected()) {
+                showPostsLine = true;
+            }
+            else showPostsLine = false;
             setupSimulation();
             btnRun.setEnabled(false);
             
@@ -277,7 +295,8 @@ public class GUIClass extends JPanel implements ActionListener
     public void createGraphFrame() {
 
         JFrame gvFrame = new JFrame("Graphical View");
-        Grapher g = new Grapher(loginNumberList, totalPostsDaily, days, users, showGridLines);
+        Grapher g = new Grapher(loginNumberList, totalPostsDaily, days, users, 
+                                showGridLines, showLoginsLine, showPostsLine);
         gvFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, aqua));
         gvFrame.add(g);
         gvFrame.setSize(600, 600);

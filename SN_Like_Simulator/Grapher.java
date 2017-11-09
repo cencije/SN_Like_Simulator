@@ -20,6 +20,8 @@ public class Grapher extends JPanel {
     Stroke GRAPH_STROKE = new BasicStroke(1f);
     Stroke GRID_STROKE = new BasicStroke(0.25f);
     boolean showGrids = true;
+    boolean showLogins = true;
+    boolean showPosts = true;
     int numDays = 0;
     int numUsers = 0;
     ArrayList<Integer> loginPoints = new ArrayList<Integer>();
@@ -28,12 +30,14 @@ public class Grapher extends JPanel {
      * Constructor for objects of class Grapher
      */
     public Grapher(ArrayList<Integer> loginList, ArrayList<Integer> postDailyList, int days, 
-                   int users, boolean showGrid) {
+    int users, boolean showGrid, boolean showLogin, boolean showPost) {
         loginPoints = loginList;
         postDailyPoints = postDailyList;
         numDays = days;  
         numUsers = users;
         showGrids = showGrid;
+        showLogins = showLogin;
+        showPosts = showPost;
     }
 
     public void paintComponent(Graphics g) {
@@ -55,7 +59,7 @@ public class Grapher extends JPanel {
         float scaleDays = (float) 540 / (numDays - 1);
         float scaleUsers = (float) 520 / numUsers;
         //int scalePosts = 400 / numPosts;
-        
+
         if (showGrids) {
             g2.setColor(Color.YELLOW);
             for (int i = 1; i < numDays - 1; i++) {
@@ -66,31 +70,34 @@ public class Grapher extends JPanel {
             }
         }
         g2.setStroke(GRAPH_STROKE);
-        for (int i = 0; i < numDays - 1; i++) {
-            g2.setColor(lightGreen);
-            g2.draw(new Line2D.Float((20 + (i * scaleDays)), 540 - (scaleUsers * loginPoints.get(i)), 
-                    (20 + ((i + 1) * scaleDays)), 540 - (scaleUsers * loginPoints.get(i+1))));
-            g2.setColor(aqua);
-            Ellipse2D.Double shape = new Ellipse2D.Double((20 + (i * scaleDays)) - 1, 
-                    (540 - (scaleUsers * loginPoints.get(i))) - 1, 2 , 2);
-            g2.draw(shape);
+        if (showLogins) {
+            for (int i = 0; i < numDays - 1; i++) {
+                g2.setColor(lightGreen);
+                g2.draw(new Line2D.Float((20 + (i * scaleDays)), 540 - (scaleUsers * loginPoints.get(i)), 
+                        (20 + ((i + 1) * scaleDays)), 540 - (scaleUsers * loginPoints.get(i+1))));
+                g2.setColor(aqua);
+                Ellipse2D.Double shape = new Ellipse2D.Double((20 + (i * scaleDays)) - 1, 
+                        (540 - (scaleUsers * loginPoints.get(i))) - 1, 2 , 2);
+                g2.draw(shape);
+            }
+            Ellipse2D.Double lastDotLogin = new Ellipse2D.Double((20 + ((numDays-1) * scaleDays)) - 1, 
+                    (540 - (scaleUsers * loginPoints.get(numDays-1))) - 1, 2 , 2);
+            g2.draw(lastDotLogin);
         }
-        Ellipse2D.Double lastDotLogin = new Ellipse2D.Double((20 + ((numDays-1) * scaleDays)) - 1, 
-                (540 - (scaleUsers * loginPoints.get(numDays-1))) - 1, 2 , 2);
-        g2.draw(lastDotLogin);
-        for (int i = 0; i < numDays - 1; i++) {
-            g2.setColor(Color.RED);
-            g2.draw(new Line2D.Float((20 + (i * scaleDays)), 540 - (scaleUsers * postDailyPoints.get(i)), 
-                    (20 + ((i + 1) * scaleDays)), 540 - (scaleUsers * postDailyPoints.get(i + 1))));
-            g2.setColor(aqua);
-            Ellipse2D.Double shape = new Ellipse2D.Double((20 + (i * scaleDays)) - 1, 
-                    (540 - (scaleUsers * postDailyPoints.get(i))) - 1, 2 , 2);
-            g2.draw(shape);
+        if (showPosts) {
+            for (int i = 0; i < numDays - 1; i++) {
+                g2.setColor(Color.RED);
+                g2.draw(new Line2D.Float((20 + (i * scaleDays)), 540 - (scaleUsers * postDailyPoints.get(i)), 
+                        (20 + ((i + 1) * scaleDays)), 540 - (scaleUsers * postDailyPoints.get(i + 1))));
+                g2.setColor(aqua);
+                Ellipse2D.Double shape = new Ellipse2D.Double((20 + (i * scaleDays)) - 1, 
+                        (540 - (scaleUsers * postDailyPoints.get(i))) - 1, 2 , 2);
+                g2.draw(shape);
+            }
+            Ellipse2D.Double lastDotPost = new Ellipse2D.Double((20 + ((numDays-1) * scaleDays)) - 1, 
+                    (540 - (scaleUsers * postDailyPoints.get(numDays-1))) - 1, 2 , 2);
+            g2.draw(lastDotPost);
         }
-
-        Ellipse2D.Double lastDotPost = new Ellipse2D.Double((20 + ((numDays-1) * scaleDays)) - 1, 
-                (540 - (scaleUsers * postDailyPoints.get(numDays-1))) - 1, 2 , 2);
-        g2.draw(lastDotPost);
         /*for (int i = 0; i < numDays - 1; i++) {
         g.drawLine(i * scale, 400 - loginPoints.get(i), (i + 1) * scale, 400 - loginPoints.get(i+1));
         }*/
