@@ -1,6 +1,6 @@
 #BlueJ class context
-comment0.params=loginList\ postDailyList\ days\ users\ showGrid\ showLogin\ showPost
-comment0.target=Grapher(java.util.ArrayList,\ java.util.ArrayList,\ int,\ int,\ boolean,\ boolean,\ boolean)
+comment0.params=guiC\ loginList\ postDailyList\ days\ users\ showGrid\ showLogin\ showPost
+comment0.target=Grapher(GUIClass,\ java.util.ArrayList,\ java.util.ArrayList,\ int,\ int,\ boolean,\ boolean,\ boolean)
 comment0.text=\n\ Constructor\ for\ objects\ of\ class\ Grapher\n
 comment1.params=g
 comment1.target=void\ paintComponent(java.awt.Graphics)

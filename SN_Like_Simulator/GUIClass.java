@@ -16,10 +16,10 @@ import java.util.Random;
 public class GUIClass extends JPanel implements ActionListener
 {
     JFrame mainFrame;
-    JButton btnParameters, btnRun;
+    JButton btnParameters, btnRun, btnRepeatRun;
     JCheckBox chkShare, chkGrids, chkLogins, chkPosts;
     JTextField tfUsers, tfDays, tfAvgLogin, tfYears, tfSeed;
-    JLabel lblUsers, lblDays, dummyLabel;
+    JLabel lblUsers, lblDays, lblRunning, dummyLabel;
     Color lightGreen = new Color(204, 255, 153);
     Color aqua = new Color(0, 255, 255);
     int days, users;
@@ -64,6 +64,13 @@ public class GUIClass extends JPanel implements ActionListener
         btnRun.addActionListener(this);
         btnRun.setEnabled(false);
         mainFrame.add(btnRun);
+        
+        btnRepeatRun = new JButton("Repeat Run");
+        btnRepeatRun.setBounds(190,1,100,30);
+        btnRepeatRun.setForeground(Color.BLACK);
+        btnRepeatRun.addActionListener(this);
+        btnRepeatRun.setEnabled(false);
+        mainFrame.add(btnRepeatRun);
 
         lblUsers = new JLabel("Number of Users:");
         lblUsers.setBounds(5, 40, 120, 30);
@@ -110,6 +117,12 @@ public class GUIClass extends JPanel implements ActionListener
         chkPosts.setForeground(Color.WHITE);
         mainFrame.add(chkPosts);
         
+        lblUsers = new JLabel("Program running, please wait...");
+        lblUsers.setBounds(5, 40, 120, 30);
+        lblUsers.setForeground(Color.WHITE);
+        mainFrame.add(lblUsers);
+        lblUsers.setVisible(false);
+        
         dummyLabel = new JLabel("");
         mainFrame.add(dummyLabel);
 
@@ -131,8 +144,10 @@ public class GUIClass extends JPanel implements ActionListener
                 showPostsLine = true;
             }
             else showPostsLine = false;
+            lblUsers.setVisible(true);
             setupSimulation();
             btnRun.setEnabled(false);
+            btnRepeatRun.setEnabled(true);
             
         }
         if (evt.getActionCommand().equals("Set Parameters")) {
@@ -183,6 +198,21 @@ public class GUIClass extends JPanel implements ActionListener
                 days = Integer.parseInt(daysString);
                 btnRun.setEnabled(true);
             }
+        }
+        if (evt.getActionCommand().equals("Repeat Run")) {
+            if (chkGrids.isSelected()) {
+                showGridLines = true;
+            }
+            else showGridLines = false;
+            if (chkLogins.isSelected()) {
+                showLoginsLine = true;
+            }
+            else showLoginsLine = false;
+            if (chkPosts.isSelected()) {
+                showPostsLine = true;
+            }
+            else showPostsLine = false;
+            createGraphFrame();
         }
     }
 
@@ -295,11 +325,12 @@ public class GUIClass extends JPanel implements ActionListener
     public void createGraphFrame() {
 
         JFrame gvFrame = new JFrame("Graphical View");
-        Grapher g = new Grapher(loginNumberList, totalPostsDaily, days, users, 
+        Grapher g = new Grapher(this, loginNumberList, totalPostsDaily, days, users, 
                                 showGridLines, showLoginsLine, showPostsLine);
         gvFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, aqua));
         gvFrame.add(g);
         gvFrame.setSize(600, 600);
         gvFrame.setVisible(true);
     }
+    public void doneRunning() { lblUsers.setVisible(false); } 
 }

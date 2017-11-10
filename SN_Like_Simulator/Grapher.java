@@ -26,11 +26,13 @@ public class Grapher extends JPanel {
     int numUsers = 0;
     ArrayList<Integer> loginPoints = new ArrayList<Integer>();
     ArrayList<Integer> postDailyPoints = new ArrayList<Integer>();
+    GUIClass guiClass;
     /**
      * Constructor for objects of class Grapher
      */
-    public Grapher(ArrayList<Integer> loginList, ArrayList<Integer> postDailyList, int days, 
+    public Grapher(GUIClass guiC, ArrayList<Integer> loginList, ArrayList<Integer> postDailyList, int days, 
     int users, boolean showGrid, boolean showLogin, boolean showPost) {
+        guiClass = guiC;
         loginPoints = loginList;
         postDailyPoints = postDailyList;
         numDays = days;  
@@ -98,6 +100,7 @@ public class Grapher extends JPanel {
                     (540 - (scaleUsers * postDailyPoints.get(numDays-1))) - 1, 2 , 2);
             g2.draw(lastDotPost);
         }
+        guiClass.doneRunning();
         /*for (int i = 0; i < numDays - 1; i++) {
         g.drawLine(i * scale, 400 - loginPoints.get(i), (i + 1) * scale, 400 - loginPoints.get(i+1));
         }*/
