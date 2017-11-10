@@ -151,6 +151,7 @@ public class GUIClass extends JPanel implements ActionListener
             
         }
         if (evt.getActionCommand().equals("Set Parameters")) {
+            btnRepeatRun.setEnabled(false);
             userList.clear();
             postList.clear();
             loginNumberList.clear();

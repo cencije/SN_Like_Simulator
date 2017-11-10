@@ -115,7 +115,6 @@ public class Grapher extends JPanel {
                         (540 - (scaleUsers * loginPoints.get(numDays-1))) - 1, 2 , 2);
                 g2.draw(lastDotLogin);
             }
-
         }
         if (showPosts) {
             for (int i = 0; i < numDays - 1; i++) {
@@ -148,7 +147,6 @@ public class Grapher extends JPanel {
                         (540 - (scaleUsers * postDailyPoints.get(numDays-1))) - 1, 2 , 2);
                 g2.draw(lastDotPost);
             }
-
         }
         guiClass.doneRunning();
         /*for (int i = 0; i < numDays - 1; i++) {
