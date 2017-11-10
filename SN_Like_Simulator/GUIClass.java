@@ -307,9 +307,9 @@ public class GUIClass extends JPanel implements ActionListener
                 shareTotalPost = currentPost.getShares();
             }
         }
-        if (mostViewed != null) System.out.println("Most viewed = " + mostViewed.getID());
+        /*if (mostViewed != null) System.out.println("Most viewed = " + mostViewed.getID());
         if (mostLiked != null) System.out.println("Most liked = " + mostLiked.getID());
-        if (mostShared != null) System.out.println("Most shared = " + mostShared.getID());
+        if (mostShared != null) System.out.println("Most shared = " + mostShared.getID());*/
 
         createGraphFrame();
     }

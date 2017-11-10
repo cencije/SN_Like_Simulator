@@ -103,9 +103,19 @@ public class Grapher extends JPanel {
                     g2.draw(shape);
                 }
             }
-            Ellipse2D.Double lastDotLogin = new Ellipse2D.Double((20 + ((numDays-1) * scaleDays)) - 1, 
-                    (540 - (scaleUsers * loginPoints.get(numDays-1))) - 1, 2 , 2);
-            g2.draw(lastDotLogin);
+            if (numDays == dayHLD) {
+                g2.setColor(pink);
+                Ellipse2D.Double lastDotLogin = new Ellipse2D.Double((20 + ((numDays-1) * scaleDays)) - 1, 
+                        (540 - (scaleUsers * loginPoints.get(numDays-1))) - 1, 2 , 2);
+                g2.draw(lastDotLogin);
+            }
+            else {
+                g2.setColor(aqua);
+                Ellipse2D.Double lastDotLogin = new Ellipse2D.Double((20 + ((numDays-1) * scaleDays)) - 1, 
+                        (540 - (scaleUsers * loginPoints.get(numDays-1))) - 1, 2 , 2);
+                g2.draw(lastDotLogin);
+            }
+
         }
         if (showPosts) {
             for (int i = 0; i < numDays - 1; i++) {
@@ -126,9 +136,19 @@ public class Grapher extends JPanel {
                     g2.draw(shape);
                 }
             }
-            Ellipse2D.Double lastDotPost = new Ellipse2D.Double((20 + ((numDays-1) * scaleDays)) - 1, 
-                    (540 - (scaleUsers * postDailyPoints.get(numDays-1))) - 1, 2 , 2);
-            g2.draw(lastDotPost);
+            if (numDays == dayHPD) {
+                g2.setColor(pink);
+                Ellipse2D.Double lastDotPost = new Ellipse2D.Double((20 + ((numDays-1) * scaleDays)) - 1, 
+                        (540 - (scaleUsers * postDailyPoints.get(numDays-1))) - 1, 2 , 2);
+                g2.draw(lastDotPost);
+            }
+            else {
+                g2.setColor(aqua);
+                Ellipse2D.Double lastDotPost = new Ellipse2D.Double((20 + ((numDays-1) * scaleDays)) - 1, 
+                        (540 - (scaleUsers * postDailyPoints.get(numDays-1))) - 1, 2 , 2);
+                g2.draw(lastDotPost);
+            }
+
         }
         guiClass.doneRunning();
         /*for (int i = 0; i < numDays - 1; i++) {
