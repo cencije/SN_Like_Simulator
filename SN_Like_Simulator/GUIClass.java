@@ -127,11 +127,11 @@ public class GUIClass extends JPanel implements ActionListener
         chkPosts.setForeground(Color.WHITE);
         mainFrame.add(chkPosts);
 
-        lblUsers = new JLabel("Program running, please wait...");
-        lblUsers.setBounds(5, 250, 120, 30);
-        lblUsers.setForeground(Color.WHITE);
-        mainFrame.add(lblUsers);
-        lblUsers.setVisible(true);
+        lblRunning = new JLabel("Program running, please wait...");
+        lblRunning.setBounds(5, 250, 120, 30);
+        lblRunning.setForeground(Color.WHITE);
+        mainFrame.add(lblRunning);
+        lblRunning.setVisible(false);
 
         String[] columnNames = {"User ID", "Logins", "Login %", "Likes"};
         Object[][] data = {};
@@ -173,7 +173,7 @@ public class GUIClass extends JPanel implements ActionListener
     public void actionPerformed(ActionEvent evt) {
         int timesTried = 0;
         if (evt.getActionCommand().equals("Run")) {
-            lblUsers.setVisible(true);
+            lblRunning.setVisible(true);
             if (chkGrids.isSelected()) {
                 showGridLines = true;
             }
@@ -192,6 +192,7 @@ public class GUIClass extends JPanel implements ActionListener
 
         }
         if (evt.getActionCommand().equals("Set Parameters")) {
+            lblRunning.setVisible(false);
             btnRepeatRun.setEnabled(false);
             userList.clear();
             postList.clear();
