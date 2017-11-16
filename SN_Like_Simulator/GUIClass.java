@@ -36,9 +36,9 @@ public class GUIClass extends JPanel implements ActionListener
     Random rand;
 
     DefaultTableModel model;
-    
+
     DecimalFormat df2 = new DecimalFormat(".##");
-    
+
     ArrayList<User> userList = new ArrayList<User>();
     ArrayList<Post> postList = new ArrayList<Post>();
     ArrayList<Post> recentPostList = new ArrayList<Post>();
@@ -137,17 +137,22 @@ public class GUIClass extends JPanel implements ActionListener
         Object[][] data = {};
 
         model = new DefaultTableModel(columnNames, 0) {
+            public boolean isCellEditable(int row, int column)
+            {
+                return false;//This causes all cells to be not editable
+            }
+
             @Override
             public Class getColumnClass(int column) {
                 switch (column) {
                     case 0:
-                        return Integer.class;
+                    return Integer.class;
                     case 1:
-                        return Integer.class;
+                    return Integer.class;
                     case 2:
-                        return Float.class;
+                    return Float.class;
                     default:
-                        return Integer.class;
+                    return Integer.class;
                 }
             }
         };
@@ -158,7 +163,7 @@ public class GUIClass extends JPanel implements ActionListener
         table.setFillsViewportHeight(true);
         scrollPane.setBounds(5, 280, 285, 290); 
         mainFrame.add(scrollPane);
-        
+
         dummyLabel = new JLabel("");
         mainFrame.add(dummyLabel);
 
@@ -307,7 +312,7 @@ public class GUIClass extends JPanel implements ActionListener
         User mostActive = null;
         User mostFriends = null;
         User leastFriends = null;
-        
+
         /*for (int i = 0; i < users; i++) {
         System.out.println("--------------------------------");
         for (int i = 0; i < postList.size(); i++) {
@@ -349,9 +354,9 @@ public class GUIClass extends JPanel implements ActionListener
                 loginPercentage = (logAmount * 100f) / days;
             }
             Object[] insertingUserRow = {new Integer(thisUser.getUserID()), 
-                                         new Integer(thisUser.loginAmount), 
-                                         new Float(df2.format(loginPercentage)), 
-                                         new Integer(thisUser.likeAmount)};
+                    new Integer(thisUser.loginAmount), 
+                    new Float(df2.format(loginPercentage)), 
+                    new Integer(thisUser.likeAmount)};
             model.addRow(insertingUserRow);
         }   
         createGraphFrame();
