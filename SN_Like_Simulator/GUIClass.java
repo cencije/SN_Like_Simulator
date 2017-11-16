@@ -21,7 +21,7 @@ import java.math.RoundingMode;
 public class GUIClass extends JPanel implements ActionListener
 {
     JFrame mainFrame;
-    JButton btnParameters, btnRun, btnRepeatRun;
+    JButton btnParameters, btnRun, btnRepeatRun, btnClearTable;
     JCheckBox chkShare, chkGrids, chkLogins, chkPosts;
     JTextField tfUsers, tfDays, tfAvgLogin, tfYears, tfSeed;
     JLabel lblUsers, lblDays, lblRunning, dummyLabel;
@@ -164,6 +164,13 @@ public class GUIClass extends JPanel implements ActionListener
         scrollPane.setBounds(5, 280, 285, 290); 
         mainFrame.add(scrollPane);
 
+        btnClearTable = new JButton("Clear Table");
+        btnClearTable.setBounds(150, 250, 100, 30);
+        btnClearTable.setForeground(Color.BLACK);
+        btnClearTable.addActionListener(this);
+        btnClearTable.setEnabled(true);
+        mainFrame.add(btnClearTable);
+        
         dummyLabel = new JLabel("");
         mainFrame.add(dummyLabel);
 
@@ -256,6 +263,9 @@ public class GUIClass extends JPanel implements ActionListener
             }
             else showPostsLine = false;
             createGraphFrame();
+        }
+        if (evt.getActionCommand().equals("Clear Table")) {
+            model.setRowCount(0);
         }
     }
 
