@@ -131,15 +131,29 @@ public class GUIClass extends JPanel implements ActionListener
         lblUsers.setBounds(5, 250, 120, 30);
         lblUsers.setForeground(Color.WHITE);
         mainFrame.add(lblUsers);
-        lblUsers.setVisible(false);
+        lblUsers.setVisible(true);
 
         String[] columnNames = {"User ID", "Logins", "Login %", "Likes"};
         Object[][] data = {};
 
-        model = new DefaultTableModel(columnNames, 0);
+        model = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public Class getColumnClass(int column) {
+                switch (column) {
+                    case 0:
+                        return Integer.class;
+                    case 1:
+                        return Integer.class;
+                    case 2:
+                        return Float.class;
+                    default:
+                        return Integer.class;
+                }
+            }
+        };
         table = new JTable();
         table.setModel(model);
-        
+        table.setAutoCreateRowSorter(true);
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
         scrollPane.setBounds(5, 280, 285, 290); 
@@ -295,16 +309,6 @@ public class GUIClass extends JPanel implements ActionListener
         User leastFriends = null;
         
         /*for (int i = 0; i < users; i++) {
-        int loginAmount = userList.get(i).loginAmount;
-        float loginPercentage = 0;
-        if (loginAmount != 0) {
-        loginPercentage = (userList.get(i).loginAmount * 100f) / days;
-        }
-
-        System.out.print("User " + userList.get(i).userIDNo + " login %");
-        System.out.printf("%.2f", loginPercentage);
-        System.out.println();
-        }
         System.out.println("--------------------------------");
         for (int i = 0; i < postList.size(); i++) {
         Post currentPost = postList.get(i);
@@ -344,12 +348,12 @@ public class GUIClass extends JPanel implements ActionListener
             if (logAmount != 0) {
                 loginPercentage = (logAmount * 100f) / days;
             }
-            Object[] insertingUserRow = {thisUser.getUserID(), thisUser.loginAmount, 
-                                         df2.format(loginPercentage), thisUser.likeAmount};
+            Object[] insertingUserRow = {new Integer(thisUser.getUserID()), 
+                                         new Integer(thisUser.loginAmount), 
+                                         new Float(df2.format(loginPercentage)), 
+                                         new Integer(thisUser.likeAmount)};
             model.addRow(insertingUserRow);
         }   
-        //table.setPreferredScrollableViewportSize(new Dimension(500, 70));
-        
         createGraphFrame();
     }
 
