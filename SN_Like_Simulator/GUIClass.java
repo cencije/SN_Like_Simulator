@@ -6,6 +6,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
+import java.util.Collections;
+import javax.swing.table.DefaultTableModel;
+
+import java.text.DecimalFormat;
+import java.math.RoundingMode;
 
 /**
  * Write a description of class GUIClass here.
@@ -20,6 +25,7 @@ public class GUIClass extends JPanel implements ActionListener
     JCheckBox chkShare, chkGrids, chkLogins, chkPosts;
     JTextField tfUsers, tfDays, tfAvgLogin, tfYears, tfSeed;
     JLabel lblUsers, lblDays, lblRunning, dummyLabel;
+    JTable table;
     Color lightGreen = new Color(204, 255, 153);
     Color aqua = new Color(0, 255, 255);
     int days, users;
@@ -29,6 +35,10 @@ public class GUIClass extends JPanel implements ActionListener
     boolean showGridLines, showLoginsLine, showPostsLine;
     Random rand;
 
+    DefaultTableModel model;
+    
+    DecimalFormat df2 = new DecimalFormat(".##");
+    
     ArrayList<User> userList = new ArrayList<User>();
     ArrayList<Post> postList = new ArrayList<Post>();
     ArrayList<Post> recentPostList = new ArrayList<Post>();
@@ -46,7 +56,7 @@ public class GUIClass extends JPanel implements ActionListener
         mainFrame = new JFrame();
         mainFrame.getContentPane().setBackground(Color.BLACK);
         mainFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, aqua));
-        mainFrame.setBounds(0,0,300,300);
+        mainFrame.setBounds(0,0,300,600);
         mainFrame.getContentPane().setLayout(new BorderLayout());
         mainFrame.setResizable(false);
         mainFrame.setTitle("Social Network Like Simulator");
@@ -64,7 +74,7 @@ public class GUIClass extends JPanel implements ActionListener
         btnRun.addActionListener(this);
         btnRun.setEnabled(false);
         mainFrame.add(btnRun);
-        
+
         btnRepeatRun = new JButton("Repeat Run");
         btnRepeatRun.setBounds(190,1,100,30);
         btnRepeatRun.setForeground(Color.BLACK);
@@ -106,22 +116,34 @@ public class GUIClass extends JPanel implements ActionListener
         chkGrids.setBounds(5, 160, 200, 30);
         chkGrids.setForeground(Color.WHITE);
         mainFrame.add(chkGrids);
-        
+
         chkLogins = new JCheckBox("Show logins line.");
         chkLogins.setBounds(5, 190, 200, 30);
         chkLogins.setForeground(Color.WHITE);
         mainFrame.add(chkLogins);
-        
+
         chkPosts = new JCheckBox("Show posts line.");
         chkPosts.setBounds(5, 220, 200, 30);
         chkPosts.setForeground(Color.WHITE);
         mainFrame.add(chkPosts);
-        
+
         lblUsers = new JLabel("Program running, please wait...");
-        lblUsers.setBounds(5, 40, 120, 30);
+        lblUsers.setBounds(5, 250, 120, 30);
         lblUsers.setForeground(Color.WHITE);
         mainFrame.add(lblUsers);
         lblUsers.setVisible(false);
+
+        String[] columnNames = {"User ID", "Logins", "Login %", "Likes"};
+        Object[][] data = {};
+
+        model = new DefaultTableModel(columnNames, 0);
+        table = new JTable();
+        table.setModel(model);
+        
+        JScrollPane scrollPane = new JScrollPane(table);
+        table.setFillsViewportHeight(true);
+        scrollPane.setBounds(5, 280, 285, 290); 
+        mainFrame.add(scrollPane);
         
         dummyLabel = new JLabel("");
         mainFrame.add(dummyLabel);
@@ -132,6 +154,7 @@ public class GUIClass extends JPanel implements ActionListener
     public void actionPerformed(ActionEvent evt) {
         int timesTried = 0;
         if (evt.getActionCommand().equals("Run")) {
+            lblUsers.setVisible(true);
             if (chkGrids.isSelected()) {
                 showGridLines = true;
             }
@@ -144,11 +167,10 @@ public class GUIClass extends JPanel implements ActionListener
                 showPostsLine = true;
             }
             else showPostsLine = false;
-            lblUsers.setVisible(true);
             setupSimulation();
             btnRun.setEnabled(false);
             btnRepeatRun.setEnabled(true);
-            
+
         }
         if (evt.getActionCommand().equals("Set Parameters")) {
             btnRepeatRun.setEnabled(false);
@@ -225,7 +247,7 @@ public class GUIClass extends JPanel implements ActionListener
 
     public void makeUsers() {
         for (int i = 0; i < users; i++) {
-            User u = new User(i, (rand.nextInt(8) + 3), (rand.nextInt(8) + 3), this);//, seed);
+            User u = new User(i+1, (rand.nextInt(8) + 3), (rand.nextInt(8) + 3), this);//, seed);
             userList.add(u);
         }
     }
@@ -271,23 +293,23 @@ public class GUIClass extends JPanel implements ActionListener
         User mostActive = null;
         User mostFriends = null;
         User leastFriends = null;
-
+        
         /*for (int i = 0; i < users; i++) {
-            int loginAmount = userList.get(i).loginAmount;
-            float loginPercentage = 0;
-            if (loginAmount != 0) {
-                loginPercentage = (userList.get(i).loginAmount * 100f) / days;
-            }
+        int loginAmount = userList.get(i).loginAmount;
+        float loginPercentage = 0;
+        if (loginAmount != 0) {
+        loginPercentage = (userList.get(i).loginAmount * 100f) / days;
+        }
 
-            System.out.print("User " + userList.get(i).userIDNo + " login %");
-            System.out.printf("%.2f", loginPercentage);
-            System.out.println();
+        System.out.print("User " + userList.get(i).userIDNo + " login %");
+        System.out.printf("%.2f", loginPercentage);
+        System.out.println();
         }
         System.out.println("--------------------------------");
         for (int i = 0; i < postList.size(); i++) {
-            Post currentPost = postList.get(i);
-            System.out.println("Post # " + currentPost.postID + " on Day: " + currentPost.dayNumber
-                + " Posted by: " + currentPost.originalPoster.userIDNo);
+        Post currentPost = postList.get(i);
+        System.out.println("Post # " + currentPost.postID + " on Day: " + currentPost.dayNumber
+        + " Posted by: " + currentPost.originalPoster.userIDNo);
         }*/
         int viewTotalPost = 0;
         int likeTotalPost = 0;
@@ -311,7 +333,23 @@ public class GUIClass extends JPanel implements ActionListener
         /*if (mostViewed != null) System.out.println("Most viewed = " + mostViewed.getID());
         if (mostLiked != null) System.out.println("Most liked = " + mostLiked.getID());
         if (mostShared != null) System.out.println("Most shared = " + mostShared.getID());*/
+        ArrayList<User> peopleList = new ArrayList<User>(userList);
+        Collections.sort(peopleList);
 
+        df2.setRoundingMode(RoundingMode.UP);
+        for (int i = 0; i < userList.size(); i++) {
+            User thisUser = userList.get(i);
+            int logAmount = thisUser.loginAmount;
+            float loginPercentage = 0;
+            if (logAmount != 0) {
+                loginPercentage = (logAmount * 100f) / days;
+            }
+            Object[] insertingUserRow = {thisUser.getUserID(), thisUser.loginAmount, 
+                                         df2.format(loginPercentage), thisUser.likeAmount};
+            model.addRow(insertingUserRow);
+        }   
+        //table.setPreferredScrollableViewportSize(new Dimension(500, 70));
+        
         createGraphFrame();
     }
 
@@ -320,18 +358,17 @@ public class GUIClass extends JPanel implements ActionListener
         Post newPost = new Post(postList.size(), dayNumber, u);
         postList.add(newPost);
         recentPostList.add(newPost);
-        
     }
 
     public void createGraphFrame() {
-
         JFrame gvFrame = new JFrame("Graphical View");
         Grapher g = new Grapher(this, loginNumberList, totalPostsDaily, days, users, 
-                                showGridLines, showLoginsLine, showPostsLine);
+                showGridLines, showLoginsLine, showPostsLine);
         gvFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, aqua));
         gvFrame.add(g);
         gvFrame.setSize(600, 600);
         gvFrame.setVisible(true);
     }
+
     public void doneRunning() { lblUsers.setVisible(false); } 
 }

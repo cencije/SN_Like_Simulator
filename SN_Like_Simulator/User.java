@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class User
+public class User implements Comparable<User>
 {
     int userIDNo;
     int loginAmount = 0;
@@ -112,4 +112,9 @@ public class User
     public int getUserID() { return userIDNo; }
 
     public ArrayList<Integer> getFriendList() { return friendList; }
+    
+    @Override
+    public int compareTo(User user) {
+        return user.likeAmount - this.likeAmount;
+    }
 }
