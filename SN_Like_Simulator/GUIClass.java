@@ -128,7 +128,7 @@ public class GUIClass extends JPanel implements ActionListener
         mainFrame.add(chkPosts);
 
         lblRunning = new JLabel("Program running, please wait...");
-        lblRunning.setBounds(5, 250, 120, 30);
+        lblRunning.setBounds(5, 250, 150, 30);
         lblRunning.setForeground(Color.WHITE);
         mainFrame.add(lblRunning);
         lblRunning.setVisible(false);
@@ -165,7 +165,7 @@ public class GUIClass extends JPanel implements ActionListener
         mainFrame.add(scrollPane);
 
         btnClearTable = new JButton("Clear Table");
-        btnClearTable.setBounds(150, 250, 100, 30);
+        btnClearTable.setBounds(190, 250, 100, 30);
         btnClearTable.setForeground(Color.BLACK);
         btnClearTable.addActionListener(this);
         btnClearTable.setEnabled(true);
@@ -390,5 +390,5 @@ public class GUIClass extends JPanel implements ActionListener
         gvFrame.setVisible(true);
     }
 
-    public void doneRunning() { lblUsers.setVisible(false); } 
+    public void doneRunning() { lblRunning.setVisible(false); } 
 }

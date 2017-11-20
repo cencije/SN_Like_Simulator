@@ -61,7 +61,7 @@ public class Grapher extends JPanel {
         g2.setFont(new Font("TimesRoman", Font.PLAIN, 10)); 
         g2.drawString(numUsersString, 5, 20);
         g2.drawString("0", 10, 541);
-        g2.drawString("0", 17, 550);
+        g2.drawString("1", 17, 550);
         g2.drawString("Number of Days", 260, 550);
         AffineTransform orig = g2.getTransform();
         g2.rotate(Math.toRadians(270));
