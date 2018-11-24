@@ -73,7 +73,6 @@ public class Grapher extends JPanel {
         g2.setStroke(GRID_STROKE);
         float scaleDays = (float) 540 / (numDays - 1);
         float scaleUsers = (float) 520 / numUsers;
-        //int scalePosts = 400 / numPosts;
 
         if (showGrids) {
             g2.setColor(Color.YELLOW);
@@ -148,10 +147,6 @@ public class Grapher extends JPanel {
                 g2.draw(lastDotPost);
             }
         }
-        guiClass.doneRunning();
-        /*for (int i = 0; i < numDays - 1; i++) {
-        g.drawLine(i * scale, 400 - loginPoints.get(i), (i + 1) * scale, 400 - loginPoints.get(i+1));
-        }*/
     }
 
 }

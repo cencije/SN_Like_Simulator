@@ -21,10 +21,10 @@ import java.math.RoundingMode;
 public class GUIClass extends JPanel implements ActionListener
 {
     JFrame mainFrame;
-    JButton btnParameters, btnRun, btnRepeatRun, btnClearTable;
-    JCheckBox chkShare, chkGrids, chkLogins, chkPosts;
+    JButton btnParameters, btnRun, btnRepeatRun, btnExportTable, btnClearTable;
+    JCheckBox chkGrids, chkLogins, chkPosts;
     JTextField tfUsers, tfDays, tfAvgLogin, tfYears, tfSeed;
-    JLabel lblUsers, lblDays, lblRunning, dummyLabel;
+    JLabel lblUsers, lblDays, dummyLabel;
     JTable table;
     Color lightGreen = new Color(204, 255, 153);
     Color aqua = new Color(0, 255, 255);
@@ -102,45 +102,26 @@ public class GUIClass extends JPanel implements ActionListener
         tfDays.setEditable(true);
         mainFrame.add(tfDays);
 
-        tfSeed = new JTextField("");
-        tfSeed.setBounds(120, 100, 100, 30);
-        tfSeed.setEditable(true);
-        mainFrame.add(tfSeed);
-
-        chkShare = new JCheckBox("Users can share posts");
-        chkShare.setBounds(5, 130, 175, 30);
-        chkShare.setForeground(Color.WHITE);
-        mainFrame.add(chkShare);
-
         chkGrids = new JCheckBox("Show gridlines on graph");
-        chkGrids.setBounds(5, 160, 200, 30);
+        chkGrids.setBounds(5, 100, 200, 30);
         chkGrids.setForeground(Color.WHITE);
         mainFrame.add(chkGrids);
 
         chkLogins = new JCheckBox("Show logins line.");
-        chkLogins.setBounds(5, 190, 200, 30);
+        chkLogins.setBounds(5, 130, 200, 30);
         chkLogins.setForeground(Color.WHITE);
         mainFrame.add(chkLogins);
 
         chkPosts = new JCheckBox("Show posts line.");
-        chkPosts.setBounds(5, 220, 200, 30);
+        chkPosts.setBounds(5, 160, 200, 30);
         chkPosts.setForeground(Color.WHITE);
         mainFrame.add(chkPosts);
-
-        lblRunning = new JLabel("Program running, please wait...");
-        lblRunning.setBounds(5, 250, 150, 30);
-        lblRunning.setForeground(Color.WHITE);
-        mainFrame.add(lblRunning);
-        lblRunning.setVisible(false);
 
         String[] columnNames = {"User ID", "Logins", "Login %", "Likes"};
         Object[][] data = {};
 
         model = new DefaultTableModel(columnNames, 0) {
-            public boolean isCellEditable(int row, int column)
-            {
-                return false;//This causes all cells to be not editable
-            }
+            public boolean isCellEditable(int row, int column) { return false; }
 
             @Override
             public Class getColumnClass(int column) {
@@ -161,11 +142,18 @@ public class GUIClass extends JPanel implements ActionListener
         table.setAutoCreateRowSorter(true);
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
-        scrollPane.setBounds(5, 280, 285, 290); 
+        scrollPane.setBounds(5, 230, 285, 340); 
         mainFrame.add(scrollPane);
 
+        btnExportTable = new JButton("Export to CSV");
+        btnExportTable.setBounds(1,200,130,30);
+        btnExportTable.setForeground(Color.BLACK);
+        btnExportTable.addActionListener(this);
+        btnExportTable.setEnabled(false);
+        mainFrame.add(btnExportTable);
+        
         btnClearTable = new JButton("Clear Table");
-        btnClearTable.setBounds(190, 250, 100, 30);
+        btnClearTable.setBounds(190, 200, 100, 30);
         btnClearTable.setForeground(Color.BLACK);
         btnClearTable.addActionListener(this);
         btnClearTable.setEnabled(true);
@@ -180,26 +168,18 @@ public class GUIClass extends JPanel implements ActionListener
     public void actionPerformed(ActionEvent evt) {
         int timesTried = 0;
         if (evt.getActionCommand().equals("Run")) {
-            lblRunning.setVisible(true);
-            if (chkGrids.isSelected()) {
-                showGridLines = true;
-            }
+            if (chkGrids.isSelected()) showGridLines = true;
             else showGridLines = false;
-            if (chkLogins.isSelected()) {
-                showLoginsLine = true;
-            }
+            if (chkLogins.isSelected())  showLoginsLine = true;
             else showLoginsLine = false;
-            if (chkPosts.isSelected()) {
-                showPostsLine = true;
-            }
+            if (chkPosts.isSelected())  showPostsLine = true;
             else showPostsLine = false;
             setupSimulation();
             btnRun.setEnabled(false);
             btnRepeatRun.setEnabled(true);
-
+            btnExportTable.setEnabled(true);
         }
         if (evt.getActionCommand().equals("Set Parameters")) {
-            lblRunning.setVisible(false);
             btnRepeatRun.setEnabled(false);
             userList.clear();
             postList.clear();
@@ -209,24 +189,9 @@ public class GUIClass extends JPanel implements ActionListener
             boolean validDaysNumber = true;
             String usersString = tfUsers.getText();
             String daysString = tfDays.getText();
-            String seedString = tfSeed.getText();
-
-            rand = new Random();    
-            if (seedString.equals("")) {
-                rand = new Random(10);
-            }
-            else {
-                int seed = Integer.parseInt(seedString);
-                rand = new Random(seed);
-            }
-            if (usersString.equals("")) {
-                System.out.println("Invalid Users Value");
-                validUsersNumber = false; 
-            }
-            else if (daysString.equals("")) {
-                System.out.println("Invalid Days Value");
-                validDaysNumber = false;
-            }
+            rand = new Random(System.currentTimeMillis());
+            if (usersString.equals("")) validUsersNumber = false; 
+            else if (daysString.equals("")) validDaysNumber = false;
             else {
                 for (int i = 0; i < usersString.length(); i++) {
                     if (Character.isDigit(tfUsers.getText().charAt(i)) == false) {
@@ -250,22 +215,37 @@ public class GUIClass extends JPanel implements ActionListener
             }
         }
         if (evt.getActionCommand().equals("Repeat Run")) {
-            if (chkGrids.isSelected()) {
-                showGridLines = true;
-            }
+            if (chkGrids.isSelected()) showGridLines = true;
             else showGridLines = false;
-            if (chkLogins.isSelected()) {
-                showLoginsLine = true;
-            }
+            if (chkLogins.isSelected())  showLoginsLine = true;
             else showLoginsLine = false;
-            if (chkPosts.isSelected()) {
-                showPostsLine = true;
-            }
+            if (chkPosts.isSelected())  showPostsLine = true;
             else showPostsLine = false;
             createGraphFrame();
         }
+         if (evt.getActionCommand().equals("Export to CSV")) {
+            try {
+                FileWriter csv = new FileWriter(new File("./ExperimentData.csv"));
+        
+                for (int i = 0; i < model.getColumnCount(); i++) {
+                    csv.write(model.getColumnName(i) + ",");
+                }
+                csv.write("\n");
+        
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    for (int j = 0; j < model.getColumnCount(); j++) {
+                        csv.write(model.getValueAt(i, j).toString() + ",");
+                    }
+                    csv.write("\n");
+                }
+                csv.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         if (evt.getActionCommand().equals("Clear Table")) {
             model.setRowCount(0);
+            btnExportTable.setEnabled(false);
         }
     }
 
@@ -277,7 +257,7 @@ public class GUIClass extends JPanel implements ActionListener
 
     public void makeUsers() {
         for (int i = 0; i < users; i++) {
-            User u = new User(i+1, (rand.nextInt(8) + 3), (rand.nextInt(8) + 3), this);//, seed);
+            User u = new User(i+1, (rand.nextInt(8) + 3), (rand.nextInt(8) + 3), this);
             userList.add(u);
         }
     }
@@ -291,7 +271,6 @@ public class GUIClass extends JPanel implements ActionListener
                 Post thisPost = recentPostList.get(j);
                 int dayNo = thisPost.getOriginalDay();
                 if ((i - dayNo) > 3) {
-                    //System.out.println("Removing Post # " + recentPostList.get(j).getID());
                     recentPostList.remove(j);
                     j--;
 
@@ -304,9 +283,7 @@ public class GUIClass extends JPanel implements ActionListener
 
                 int checkedUser = rand.nextInt(todaysList.size());
                 boolean loggedIn = todaysList.get(checkedUser).checkActivity(recentPostList, userList);
-                if (loggedIn) {
-                    todaysLogins++;
-                }
+                if (loggedIn) todaysLogins++;
                 todaysList.remove(checkedUser);
             }
             loginNumberList.add(todaysLogins);
@@ -323,20 +300,11 @@ public class GUIClass extends JPanel implements ActionListener
         User mostActive = null;
         User mostFriends = null;
         User leastFriends = null;
-
-        /*for (int i = 0; i < users; i++) {
-        System.out.println("--------------------------------");
-        for (int i = 0; i < postList.size(); i++) {
-        Post currentPost = postList.get(i);
-        System.out.println("Post # " + currentPost.postID + " on Day: " + currentPost.dayNumber
-        + " Posted by: " + currentPost.originalPoster.userIDNo);
-        }*/
         int viewTotalPost = 0;
         int likeTotalPost = 0;
         int shareTotalPost = 0;
         for (int i = 0; i < postList.size(); i++) {
             Post currentPost = postList.get(i);
-            //System.out.println("Post # " + currentPost.getID() + " total likes: " + currentPost.getLikes());
             if (currentPost.getViews() > viewTotalPost) {
                 mostViewed = currentPost;
                 viewTotalPost = currentPost.getViews();
@@ -350,9 +318,6 @@ public class GUIClass extends JPanel implements ActionListener
                 shareTotalPost = currentPost.getShares();
             }
         }
-        /*if (mostViewed != null) System.out.println("Most viewed = " + mostViewed.getID());
-        if (mostLiked != null) System.out.println("Most liked = " + mostLiked.getID());
-        if (mostShared != null) System.out.println("Most shared = " + mostShared.getID());*/
         ArrayList<User> peopleList = new ArrayList<User>(userList);
         Collections.sort(peopleList);
 
@@ -361,9 +326,7 @@ public class GUIClass extends JPanel implements ActionListener
             User thisUser = userList.get(i);
             int logAmount = thisUser.loginAmount;
             float loginPercentage = 0;
-            if (logAmount != 0) {
-                loginPercentage = (logAmount * 100f) / days;
-            }
+            if (logAmount != 0)  loginPercentage = (logAmount * 100f) / days;
             Object[] insertingUserRow = {new Integer(thisUser.getUserID()), 
                     new Integer(thisUser.loginAmount), 
                     new Float(df2.format(loginPercentage)), 
@@ -386,9 +349,11 @@ public class GUIClass extends JPanel implements ActionListener
                 showGridLines, showLoginsLine, showPostsLine);
         gvFrame.getRootPane().setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, aqua));
         gvFrame.add(g);
+        gvFrame.setLocation(300,0);
         gvFrame.setSize(600, 600);
         gvFrame.setVisible(true);
+        gvFrame.setResizable(false);
     }
 
-    public void doneRunning() { lblRunning.setVisible(false); } 
+
 }

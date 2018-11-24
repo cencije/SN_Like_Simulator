@@ -40,15 +40,11 @@ public class User implements Comparable<User>
             login(postList, userList); 
             return true;
         }
-        else { 
-            return false;
-            //System.out.println("User # " + userIDNo + " didnt login."); 
-        }
+        else return false;
     }
 
     public void login(ArrayList<Post> postList, ArrayList<User> userList) {
         loginAmount++;
-        //System.out.println("User # " + userIDNo + " logged in.");
         for (int i = 0; i < postList.size(); i++) {
             int likePost = rand.nextInt(outgoingLevel);
             Post viewingPost = postList.get(i);
@@ -61,14 +57,10 @@ public class User implements Comparable<User>
                         viewingPost.liked(userIDNo);
                     }
                 }
-                //else System.out.println("User # " + userIDNo + " cant see Post " + viewingPost.getID());
             }
         }
         int genPostChance = rand.nextInt(outgoingLevel);
-        if (genPostChance >= 2) {
-            main.newPost(this);
-        }
-
+        if (genPostChance >= 2) main.newPost(this);
         for (int i = 0; i < userList.size(); i++) {
             User otherUser = userList.get(i);
             int ouID = otherUser.getUserID();
@@ -82,9 +74,7 @@ public class User implements Comparable<User>
                 }
                 if (alreadyFriended == false) {
                     int friendRequestChance = rand.nextInt(outgoingLevel);  
-                    if (friendRequestChance >= 2) {
-                        otherUser.receiveFriendRequest(this);
-                    }
+                    if (friendRequestChance >= 2) otherUser.receiveFriendRequest(this);
                 }
             }
         }

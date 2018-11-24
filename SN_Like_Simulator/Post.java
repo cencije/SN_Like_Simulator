@@ -33,10 +33,7 @@ public class Post
     }
     public boolean alreadyLiked(int userID) {
         for (int i = 0; i < userIDLikers.size(); i++) {
-            if (userIDLikers.get(i) == userID) {
-                //System.out.println("User " + userID + " already liked Post " + postID);
-                return true;
-            }
+            if (userIDLikers.get(i) == userID) return true;
         }
         return false;
     }
